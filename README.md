@@ -1,2 +1,2 @@
-# Criptography
-Prácticas de materia optativa Criptography
+# Cryptography
+Prácticas de materia optativa Cryptography
