@@ -5,36 +5,187 @@
 #include "vigenereLibrary.h"
 
 //compile: gcc Vigenere.c alphabet.c vigenereLibrary.c -o Vigenere
+void cargarAlfabeto();
+int opciones();
+void cifrarVigenere();
+void descifrarVigenere();
 
 int main(){
-	FILE * f = fopen("alphabet.txt", "r");
-	addAlphabet(f);
+	int opcion = 0;
+	//cargar alfabeto
+	printf("Session 1: Classical cryptography\n");
+	printf("Ingresa la ruta del alfabeto: \n");
+	cargarAlfabeto();
+	do{
+		opcion = opciones();
+		switch(opcion){
+			case 1:
+				printf("Cifrar texto con Vigenere\n");
+				cifrarVigenere();
+			break;
+			case 2:
+				printf("Descifrar texto con Vigenere\n");
+				descifrarVigenere();
+			break;
+			case 3:
+				printf("Adios :D\n");
+				exit(0);
+			break;
+			default:
+				printf("Opcion random\n");
+				exit(0);
+			break;
+		}
+		//obtener seleccion
+	}while(opcion >= 1 && opcion <= 2);
+	
 
-	char * plaintext, * ciphertext,* key2, key [32];
-	plaintext = malloc(sizeof(char) * 64);
-	ciphertext = malloc(sizeof(char) * 64);
-	printAlphabet();
-	printf("Ingresa tu texto plano: ");
-	gets(plaintext);
-	printf("Ingresa tu llave: ");
-	gets(key);
-	printf("\nplaintext: %s\n", plaintext);
-	printf("key: %s\n", key);
-	
-	printf("Encriptando...\n");
-	ciphertext = encodeVigenere(plaintext, key);
-	printf("cipher: %s\n", ciphertext);
-	
-	plaintext = malloc(sizeof(char) * strlen(plaintext));
-	printf("Desencriptando...\n");
-	plaintext = decodeVigenere(ciphertext, key);
-	printf("plaintext nuevo: %s\n", plaintext);
-	
-	key2 = generateRandomKey();
-	printf("Key random:|%s|\n", key2);
+	//menu
+	/*
+		cifrar vigenere
+		descifrar vigenere
+		validar llave  de cifrado Afin
+		calcular inverso de llave valida de cifrado afin
+		cifrar afin
+		descifrar afin
+	*/
 
-	free(key2);
-	free(plaintext);
-	free(ciphertext);
+	// FILE * f = fopen("alphabet.txt", "r");
+	// addAlphabet(f);
+
+	// char * plaintext, * ciphertext,* key2, key [32];
+	// plaintext = malloc(sizeof(char) * 64);
+	// ciphertext = malloc(sizeof(char) * 64);
+	// printAlphabet();
+	// printf("Ingresa tu texto plano: ");
+	// gets(plaintext);
+	// printf("Ingresa tu llave: ");
+	// gets(key);
+	// printf("\nplaintext: %s\n", plaintext);
+	// printf("key: %s\n", key);
+	
+	// if(validWord(key) == -1){
+	// 	printf("No se encontro un caracter de la llave: %s en el alfabeto\n", key);
+	// 	exit(0);
+	// }
+	// printf("Encriptando...\n");
+	// ciphertext = encodeVigenere(plaintext, key);
+	// printf("cipher: %s\n", ciphertext);
+	
+	// plaintext = malloc(sizeof(char) * strlen(plaintext));
+	// printf("Desencriptando...\n");
+	// plaintext = decodeVigenere(ciphertext, key);
+	// printf("plaintext nuevo: %s\n", plaintext);
+	
+	// key2 = generateRandomKey();
+	// printf("Key random:|%s|\n", key2);
+
+	// free(key2);
+	// free(plaintext);
+	// free(ciphertext);
 	return 0;
+}
+
+
+void cargarAlfabeto(){
+	char ruta [256];
+	gets(ruta);
+	FILE * alphabet = fopen(ruta, "r");
+	if(alphabet == NULL){
+		printf("Error, no se pudo cargar el alfabeto en %s\n", ruta);
+		exit(1);
+	}
+	addAlphabet(alphabet);
+	fclose(alphabet);
+}
+
+int opciones(){
+	int opcion = 0;
+	printf("------ Menu ------\n");
+	printf("1 Cifrar texto con Vigenere\n");
+	printf("2 Descifrar texto con Vigenere\n");
+	printf("3 Salir\n");
+	scanf("%d", &opcion);
+	system("cls");
+	// validar llave  de cifrado Afin
+	// 	calcular inverso de llave valida de cifrado afin
+	// 	cifrar afin
+	// cargar otro alfabeto
+	// 	descifrar afin
+	return opcion;
+}
+
+void cifrarVigenere(){
+	FILE * plaintextFile, * ciphertextFile;
+	int bufferLength =1024 * 20;
+	char fileName[256], buffer[bufferLength], * key, * ciphertext;
+	char c;
+	int llaveOpcion, i;
+
+	key = malloc(sizeof(char) * 64);
+	ciphertext = malloc(sizeof(char) * bufferLength);
+
+	// pedir archivo del texto a cifrar
+	printf("Ingresa la ruta del texto a cifrar: ");
+	fflush(stdin);
+	gets(fileName);
+	//checar esa 
+	do{
+		plaintextFile = fopen(fileName, "r");
+		if (plaintextFile == NULL){
+			printf("No se pudo abrir el archivo %s\n", fileName);
+			printf("Ingrese una ruta valida: ");
+			fflush(stdin);
+			gets(fileName);
+		}else{
+			printf("Archivo con texto a cifrar cargado.\n");
+		}
+	}while(plaintextFile == NULL);
+
+	//pedir llave o generar random
+	while(1){
+		printf("\nDesea ingresar una llave (0) o que se genere pseudo aleatoriamente (1)?: ");
+		fflush(stdin);
+		scanf("%d", &llaveOpcion);
+		if(llaveOpcion == 0){
+			do{
+				printf("\nIngrese la llave: ");
+				fflush(stdin);
+				gets(key);
+				//validar llave
+				if(validWord(key) == -1){
+					printf("\nIngrese una llave Valida (todos sus caracteres deben estar en el alfabeto): ");
+				}else{
+					break;
+				}
+			}while(validWord(key) == -1);
+			break;
+		}else if(llaveOpcion == 1){
+			key = generateRandomKey();
+			break;
+		}else{
+			printf("\nIngrese una opcion valida (0 o 1): ");
+		}
+	}
+
+	printf("Llave: %s\n", key);
+	i = 0;
+	//guardar texto de archivo en buffer
+	while((c = fgetc(plaintextFile))  != EOF){
+		buffer[i] = c;
+		i++;
+	}
+	buffer[i] = '\0';
+	printf("\n");
+	printf("Texto: %s\n", buffer);
+
+	//cifrar
+	ciphertext = encodeVigenere(buffer, key);
+	//guardar en archivo con el mismo nombre del archivo del texto a cifrar con extension .vig
+	printf("Cifrado: %s\n", ciphertext);
+	//cifrado vigenere terminado matar FILE
+}
+
+void descifrarVigenere(){
+
 }

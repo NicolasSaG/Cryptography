@@ -50,3 +50,13 @@ int findValueBySymbol(char c){
 char findSymbolByValue(int c){
 	return alphabet_GLOBAL[c];
 }
+
+int validWord(char * word){
+	int i;
+	for(i = 0; word[i] != '\0'; i++){
+		if(findValueBySymbol(word[i]) == -1){
+			return -1;
+		}
+	}
+	return 1;
+}
