@@ -16,7 +16,8 @@ int main(){
 	printf("Session 1: Classical cryptography\n");
 	printf("Ingresa la ruta del alfabeto: \n");
 	cargarAlfabeto();
-	do{
+	while(1){
+		//obtener seleccion
 		opcion = opciones();
 		switch(opcion){
 			case 1:
@@ -27,18 +28,20 @@ int main(){
 				printf("Descifrar texto con Vigenere\n");
 				descifrarVigenere();
 			break;
-			case 3:
+			case 7:
+				printf("Ingrese ruta del alfabeto: \n");
+				cargarAlfabeto();
+			break;
+			case 8:
 				printf("Adios :D\n");
 				exit(0);
 			break;
 			default:
-				printf("Opcion random\n");
-				exit(0);
+				printf("Opcion no valida\n");
 			break;
 		}
-		//obtener seleccion
-	}while(opcion >= 1 && opcion <= 2);
-	
+		
+	}
 
 	//menu
 	/*
@@ -89,13 +92,16 @@ int main(){
 
 void cargarAlfabeto(){
 	char ruta [256];
+	fflush(stdin);
 	gets(ruta);
 	FILE * alphabet = fopen(ruta, "r");
 	if(alphabet == NULL){
 		printf("Error, no se pudo cargar el alfabeto en %s\n", ruta);
 		exit(1);
 	}
+
 	addAlphabet(alphabet);
+	printAlphabet();
 	fclose(alphabet);
 }
 
@@ -104,14 +110,15 @@ int opciones(){
 	printf("------ Menu ------\n");
 	printf("1 Cifrar texto con Vigenere\n");
 	printf("2 Descifrar texto con Vigenere\n");
-	printf("3 Salir\n");
-	scanf("%d", &opcion);
-	//system("cls");
 	// validar llave  de cifrado Afin
 	// 	calcular inverso de llave valida de cifrado afin
 	// 	cifrar afin
 	// cargar otro alfabeto
 	// 	descifrar afin
+	printf("7 Cargar otro alfabeto\n");
+	printf("8 Salir\n");
+	scanf("%d", &opcion);
+	
 	return opcion;
 }
 
@@ -179,7 +186,9 @@ void cifrarVigenere(){
 	printf("Texto: %s\n", buffer);
 
 	//cifrar
+	printf("Cifrando texto... \n");
 	ciphertext = encodeVigenere(buffer, key);
+
 	//guardar en archivo con el mismo nombre del archivo del texto a cifrar con extension .vig
 	printf("Cifrado: %s\n", ciphertext);
 	strcpy(fileNameOut, fileNameIn);

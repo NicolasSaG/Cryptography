@@ -10,8 +10,9 @@ char * encodeVigenere(char * plaintext, char * key){
 	int i = 0, j = 0;
 	int valuePlainText, valueKey, result;
 	int srtlenKey = strlen(key);
+	printf("Entre con pesados\n");
 	while(plaintext[i] != '\0'){
-
+		//printf("cifrado texto: %d%\n", i);
 		//recorrer el abecedario hasta encontrar la letra de plaintext y  encontrar la de la llave,
 		//y despues se suman y se calcula el mod del tam del alfabeto.
 		valuePlainText = findValueBySymbol(plaintext[i]);
