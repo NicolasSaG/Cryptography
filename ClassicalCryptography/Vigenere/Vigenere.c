@@ -106,7 +106,7 @@ int opciones(){
 	printf("2 Descifrar texto con Vigenere\n");
 	printf("3 Salir\n");
 	scanf("%d", &opcion);
-	system("cls");
+	//system("cls");
 	// validar llave  de cifrado Afin
 	// 	calcular inverso de llave valida de cifrado afin
 	// 	cifrar afin
@@ -118,7 +118,7 @@ int opciones(){
 void cifrarVigenere(){
 	FILE * plaintextFile, * ciphertextFile;
 	int bufferLength =1024 * 20;
-	char fileName[256], buffer[bufferLength], * key, * ciphertext;
+	char fileNameIn[256], fileNameOut[256], buffer[bufferLength], * key, * ciphertext;
 	char c;
 	int llaveOpcion, i;
 
@@ -128,15 +128,14 @@ void cifrarVigenere(){
 	// pedir archivo del texto a cifrar
 	printf("Ingresa la ruta del texto a cifrar: ");
 	fflush(stdin);
-	gets(fileName);
-	//checar esa 
+	gets(fileNameIn);
 	do{
-		plaintextFile = fopen(fileName, "r");
+		plaintextFile = fopen(fileNameIn, "r");
 		if (plaintextFile == NULL){
-			printf("No se pudo abrir el archivo %s\n", fileName);
+			printf("No se pudo abrir el archivo %s\n", fileNameIn);
 			printf("Ingrese una ruta valida: ");
 			fflush(stdin);
-			gets(fileName);
+			gets(fileNameIn);
 		}else{
 			printf("Archivo con texto a cifrar cargado.\n");
 		}
@@ -183,9 +182,88 @@ void cifrarVigenere(){
 	ciphertext = encodeVigenere(buffer, key);
 	//guardar en archivo con el mismo nombre del archivo del texto a cifrar con extension .vig
 	printf("Cifrado: %s\n", ciphertext);
+	strcpy(fileNameOut, fileNameIn);
+	strcat(fileNameOut, ".vig");
+	ciphertextFile = fopen(fileNameOut, "w");
+	i = 0;
+	while(ciphertext[i] != '\0'){
+		fprintf(ciphertextFile, "%c", ciphertext[i]);
+		i++;
+	}
+	fprintf(ciphertextFile, "\0");
+	fclose(plaintextFile);
+	fclose(ciphertextFile);
 	//cifrado vigenere terminado matar FILE
 }
 
 void descifrarVigenere(){
+	FILE * plaintextFile, * ciphertextFile;
+	int bufferLength =1024 * 20;
+	char fileNameIn[256], fileNameOut[256], * fileNameAux, buffer[bufferLength], * key, * plaintext;
+	char c;
+	const char extension[5] = "vig";
+	int llaveOpcion, i;
 
+	key = malloc(sizeof(char) * 64);
+	plaintext = malloc(sizeof(char) * bufferLength);
+
+	// pedir archivo del texto a cifrar
+	printf("Ingresa la ruta del texto a descifrar: ");
+	fflush(stdin);
+	gets(fileNameIn);
+	do{
+		ciphertextFile = fopen(fileNameIn, "r");
+		if (ciphertextFile == NULL){
+			printf("No se pudo abrir el archivo %s\n", fileNameIn);
+			printf("Ingrese una ruta valida: ");
+			fflush(stdin);
+			gets(fileNameIn);
+		}else{
+			printf("Archivo con texto a descifrar cargado.\n");
+		}
+	}while(ciphertextFile == NULL);
+
+	//pedir llave o generar random
+	do{
+		printf("\nIngrese la llave: ");
+		fflush(stdin);
+		gets(key);
+		//validar llave
+		if(validWord(key) == -1){
+			printf("\nIngrese una llave Valida (todos sus caracteres deben estar en el alfabeto): ");
+		}else{
+			break;
+		}
+	}while(validWord(key) == -1);
+
+	printf("Llave: %s\n", key);
+	i = 0;
+	//guardar texto de archivo en buffer
+	while((c = fgetc(ciphertextFile))  != EOF){
+		buffer[i] = c;
+		i++;
+	}
+	buffer[i] = '\0';
+	printf("\n");
+	printf("Texto: %s\n", buffer);
+
+	//cifrar
+	plaintext = decodeVigenere(buffer, key);
+	//guardar en archivo con el mismo nombre del archivo del texto a cifrar con extension .vig
+	printf("Descifrado: %s\n", plaintext);
+
+	//obtener nombre original de archivo cifrado sin .vig
+	fileNameAux = strtok(fileNameIn, extension);
+
+	printf("%s\n", fileNameAux);
+	plaintextFile = fopen(fileNameAux, "w");
+	i = 0;
+	while(plaintext[i] != '\0'){
+		fprintf(plaintextFile, "%c", plaintext[i]);
+		i++;
+	}
+	fprintf(plaintextFile, "\0");
+	fclose(plaintextFile);
+	fclose(ciphertextFile);
+	//cifrado vigenere terminado matar FILE
 }
