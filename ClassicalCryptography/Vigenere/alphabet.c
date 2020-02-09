@@ -40,8 +40,9 @@ int findValueBySymbol(char c){
 		position++;
 	}
 	if(position > alphabetSize_GLOBAL){
-		printf("Error: findValueBySymbol(%c) no se encuentra ese caracter en el alfabeto\n", c);
-		exit(0);
+		//printf("Error: findValueBySymbol(%c) no se encuentra ese caracter en el alfabeto\n", c);
+		//exit(0);
+		return -1;
 	}
 	return position;
 }

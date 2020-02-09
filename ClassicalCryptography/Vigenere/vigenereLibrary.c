@@ -7,15 +7,22 @@
 //vigenere con solo minusculas de ascii
 char * encodeVigenere(char * plaintext, char * key){
 	char * ciphertext  = malloc(sizeof(char) * (strlen(plaintext) + 1));
-	int i = 0, j = 0, result;
+	int i = 0, j = 0;
+	int valuePlainText, valueKey, result;
 	int srtlenKey = strlen(key);
+
 	while(plaintext[i] != '\0'){
 		j =  i % srtlenKey;
 		//recorrer el abecedario hasta encontrar la letra de plaintext y  encontrar la de la llave,
 		//y despues se suman y se calcula el mod del tam del alfabeto.
-		
-		result = (findValueBySymbol(plaintext[i]) + findValueBySymbol(key[j])) % alphabetSize_GLOBAL;
-		ciphertext [i] = findSymbolByValue(result);
+		valuePlainText = findValueBySymbol(plaintext[i]);
+		valueKey = findValueBySymbol(key[j]); 
+		if(valuePlainText == -1){
+			ciphertext[i] = plaintext[i];
+		}else{
+			result = (valuePlainText + valueKey) % alphabetSize_GLOBAL;
+			ciphertext [i] = findSymbolByValue(result);
+		}
 		i++;
 	}
 	ciphertext[i] = '\0';
@@ -24,14 +31,23 @@ char * encodeVigenere(char * plaintext, char * key){
 
 char * decodeVigenere(char * ciphertext, char * key){
 	char * plaintext  = malloc(sizeof(char) * (strlen(ciphertext) + 1));
-	int i = 0, j = 0, result;
+	int i = 0, j = 0;
+	int valueCipherText, valueKey, result;
 	int srtlenKey = strlen(key);
 	while(ciphertext[i] != '\0'){
 		j =  i % srtlenKey;
-		result = (findValueBySymbol(ciphertext[i]) - findValueBySymbol(key[j]));
-		if(result < 0)
-			result = alphabetSize_GLOBAL + result;
-		plaintext [i] = findSymbolByValue(result);
+		//Encontrar valores de los caracteres de llave y texto cifrado
+		valueCipherText = findValueBySymbol(ciphertext[i]);
+		valueKey = findValueBySymbol(key[j]);
+
+		if(valueCipherText == -1){
+			plaintext[i] = ciphertext[i];
+		}else{
+			result = (valueCipherText - valueKey);
+			if(result < 0)
+				result = alphabetSize_GLOBAL + result;
+			plaintext [i] = findSymbolByValue(result);
+		}
 		i++;
 	}
 	plaintext[i] = '\0';
