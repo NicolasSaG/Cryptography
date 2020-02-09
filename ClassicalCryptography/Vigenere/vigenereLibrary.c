@@ -21,7 +21,6 @@ char * encodeVigenere(char * plaintext, char * key){
 		}else{
 			result = (valuePlainText + valueKey) % alphabetSize_GLOBAL;
 			ciphertext [i] = findSymbolByValue(result);
-
 			j++;
 		}
 		if(j % srtlenKey == 0)
@@ -38,7 +37,6 @@ char * decodeVigenere(char * ciphertext, char * key){
 	int valueCipherText, valueKey, result;
 	int srtlenKey = strlen(key);
 	while(ciphertext[i] != '\0'){
-		j =  i % srtlenKey;
 		//Encontrar valores de los caracteres de llave y texto cifrado
 		valueCipherText = findValueBySymbol(ciphertext[i]);
 		valueKey = findValueBySymbol(key[j]);
@@ -50,7 +48,10 @@ char * decodeVigenere(char * ciphertext, char * key){
 			if(result < 0)
 				result = alphabetSize_GLOBAL + result;
 			plaintext [i] = findSymbolByValue(result);
+			j++;
 		}
+		if(j % srtlenKey == 0)
+			j = 0;
 		i++;
 	}
 	plaintext[i] = '\0';
