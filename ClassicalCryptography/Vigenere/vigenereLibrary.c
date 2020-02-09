@@ -59,7 +59,7 @@ char * decodeVigenere(char * ciphertext, char * key){
 	return plaintext;
 }
 
-char * generateRandomKey(){
+char * generateVigenereRandomKey(){
 	int i;
 	time_t t;
 	srand((unsigned) time(&t));

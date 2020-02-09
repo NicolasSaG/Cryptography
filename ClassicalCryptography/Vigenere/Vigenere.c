@@ -3,12 +3,15 @@
 #include <string.h>
 #include "alphabet.h"
 #include "vigenereLibrary.h"
+#include "affineLibrary.h"
 
-//compile: gcc Vigenere.c alphabet.c vigenereLibrary.c -o Vigenere
+//compile: gcc Vigenere.c alphabet.c vigenereLibrary.c affineLibrary.c -o Vigenere
 void cargarAlfabeto();
 int opciones();
 void cifrarVigenere();
 void descifrarVigenere();
+void validarLlaveAfin();
+void calcularInversoLlaveAfin();
 
 int main(){
 	int opcion = 0;
@@ -27,6 +30,14 @@ int main(){
 			case 2:
 				printf("Descifrar texto con Vigenere\n");
 				descifrarVigenere();
+			break;
+			case 3:
+				printf("Validar llave para cifrado Afin\n");
+				validarLlaveAfin();
+			break;
+			case 4:
+				printf("Calcular inverso de llave valida k=(a, b) y n\n");
+				calcularInversoLlaveAfin();
 			break;
 			case 7:
 				printf("Ingrese ruta del alfabeto: \n");
@@ -80,7 +91,7 @@ int main(){
 	// plaintext = decodeVigenere(ciphertext, key);
 	// printf("plaintext nuevo: %s\n", plaintext);
 	
-	// key2 = generateRandomKey();
+	// key2 = generateVigenereRandomKey();
 	// printf("Key random:|%s|\n", key2);
 
 	// free(key2);
@@ -110,6 +121,8 @@ int opciones(){
 	printf("------ Menu ------\n");
 	printf("1 Cifrar texto con Vigenere\n");
 	printf("2 Descifrar texto con Vigenere\n");
+	printf("3 Validar llave de cifrado afin\n");
+	printf("4 Calcular inverso de llave valida de cifrado afin\n");
 	// validar llave  de cifrado Afin
 	// 	calcular inverso de llave valida de cifrado afin
 	// 	cifrar afin
@@ -167,7 +180,7 @@ void cifrarVigenere(){
 			}while(validWord(key) == -1);
 			break;
 		}else if(llaveOpcion == 1){
-			key = generateRandomKey();
+			key = generateVigenereRandomKey();
 			break;
 		}else{
 			printf("\nIngrese una opcion valida (0 o 1): ");
@@ -275,4 +288,35 @@ void descifrarVigenere(){
 	fclose(plaintextFile);
 	fclose(ciphertextFile);
 	//cifrado vigenere terminado matar FILE
+}
+
+void validarLlaveAfin(){
+	int a, b, n;
+	printf("Llave de cifrado afin.  k = (a, b)\n");
+	printf("Ingresa la llave de la forma a, b: ");
+	printf("\nEjemplo: 23, 45\n");
+	scanf("%d, %d", &a, &b);
+	printf("Ingrese la longitud del alfabeto n: ");
+	scanf("%d", &n);
+	printf("Llave ingresada k = (%d, %d), n = %d\n", a, b, n);
+	
+	//validar llave
+	if(validateAffineKey(a, n) == -1){
+		printf("Llave no valida, a = %d y n = %d no son coprimos\n", a, n);
+	}else{
+		printf("-- Llave k =(%d, %d) valida para n = %d -- \n", a, b, n);
+	}
+}
+
+void calcularInversoLlaveAfin(){
+	int a, b, n, inv;
+	printf("Ingresa la llave de la forma a, b: ");
+	printf("\nEjemplo: 23, 45\n");
+	scanf("%d, %d", &a, &b);
+	printf("Ingrese la longitud del alfabeto n: ");
+	scanf("%d", &n);
+	printf("Llave ingresada k = (%d, %d), n = %d\n", a, b, n);
+	inv = inverseModularAritmethic(a, n);
+	printf("a^-1modn = %d^-1mod%d = %d\n", a, n, inv);
+	printf("%d*%dmod%d = 1\n", a, inv , n);
 }
