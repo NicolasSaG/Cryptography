@@ -10,9 +10,8 @@ char * encodeVigenere(char * plaintext, char * key){
 	int i = 0, j = 0;
 	int valuePlainText, valueKey, result;
 	int srtlenKey = strlen(key);
-
 	while(plaintext[i] != '\0'){
-		j =  i % srtlenKey;
+
 		//recorrer el abecedario hasta encontrar la letra de plaintext y  encontrar la de la llave,
 		//y despues se suman y se calcula el mod del tam del alfabeto.
 		valuePlainText = findValueBySymbol(plaintext[i]);
@@ -22,7 +21,11 @@ char * encodeVigenere(char * plaintext, char * key){
 		}else{
 			result = (valuePlainText + valueKey) % alphabetSize_GLOBAL;
 			ciphertext [i] = findSymbolByValue(result);
+
+			j++;
 		}
+		if(j % srtlenKey == 0)
+			j = 0;
 		i++;
 	}
 	ciphertext[i] = '\0';
