@@ -1,0 +1,52 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include "alphabet.h"
+#include "vigenereLibrary.h"
+
+//vigenere con solo minusculas de ascii
+char * encodeVigenere(char * plaintext, char * key){
+	char * ciphertext  = malloc(sizeof(char) * (strlen(plaintext) + 1));
+	int i = 0, j = 0, result;
+	int srtlenKey = strlen(key);
+	while(plaintext[i] != '\0'){
+		j =  i % srtlenKey;
+		//recorrer el abecedario hasta encontrar la letra de plaintext y  encontrar la de la llave,
+		//y despues se suman y se calcula el mod del tam del alfabeto.
+		
+		result = (findValueBySymbol(plaintext[i]) + findValueBySymbol(key[j])) % alphabetSize_GLOBAL;
+		ciphertext [i] = findSymbolByValue(result);
+		i++;
+	}
+	ciphertext[i] = '\0';
+	return ciphertext;
+}
+
+char * decodeVigenere(char * ciphertext, char * key){
+	char * plaintext  = malloc(sizeof(char) * (strlen(ciphertext) + 1));
+	int i = 0, j = 0, result;
+	int srtlenKey = strlen(key);
+	while(ciphertext[i] != '\0'){
+		j =  i % srtlenKey;
+		result = (findValueBySymbol(ciphertext[i]) - findValueBySymbol(key[j]));
+		if(result < 0)
+			result = alphabetSize_GLOBAL + result;
+		plaintext [i] = findSymbolByValue(result);
+		i++;
+	}
+	plaintext[i] = '\0';
+	return plaintext;
+}
+
+char * generateRandomKey(){
+	int i;
+	time_t t;
+	srand((unsigned) time(&t));
+	int r = (rand() % alphabetSize_GLOBAL) + 1;
+	char * key = malloc(sizeof(char) * r);
+	for(i = 0; i < r; i++){
+		key[i] = findSymbolByValue(rand()%alphabetSize_GLOBAL);
+	}
+	key[i] = '\0';
+	return key;
+}
