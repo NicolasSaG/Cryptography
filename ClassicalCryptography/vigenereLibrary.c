@@ -4,14 +4,14 @@
 #include "alphabet.h"
 #include "vigenereLibrary.h"
 
-//vigenere con solo minusculas de ascii
 char * encodeVigenere(char * plaintext, char * key){
 	char * ciphertext  = malloc(sizeof(char) * (strlen(plaintext) + 1));
 	int i = 0, j = 0;
 	int valuePlainText, valueKey, result;
 	int srtlenKey = strlen(key);
 	while(plaintext[i] != '\0'){
-		//recorrer el abecedario hasta encontrar la letra de plaintext y  encontrar la de la llave,
+		//recorrer el abecedario hasta encontrar la letra de plaintext y  
+		//encontrar la de la llave,
 		//y despues se suman y se calcula el mod del tam del alfabeto.
 		valuePlainText = findValueBySymbol(plaintext[i]);
 		valueKey = findValueBySymbol(key[j]); 

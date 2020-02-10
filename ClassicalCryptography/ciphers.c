@@ -5,7 +5,7 @@
 #include "vigenereLibrary.h"
 #include "affineLibrary.h"
 
-//compile: gcc Vigenere.c alphabet.c vigenereLibrary.c affineLibrary.c -o Vigenere
+//compile: gcc ciphers.c alphabet.c vigenereLibrary.c affineLibrary.c -o ciphers
 void cargarAlfabeto();
 int opciones();
 void cifrarVigenere();
@@ -405,6 +405,7 @@ void cifrarAfin(){
 		fprintf(ciphertextFile, "%c", ciphertext[i]);
 		i++;
 	}
+	printf("Llave usada para cifrar: (%d, %d)\n", a, b);
 	fprintf(ciphertextFile, "\0");
 	fclose(plaintextFile);
 	fclose(ciphertextFile);
@@ -415,7 +416,7 @@ void descifrarAfin(){
 	int bufferLength =1024 * 20;
 	char fileNameIn[256], fileNameOut[256], *fileNameAux, buffer[bufferLength], * key, * plaintext;
 	char c;
-	char extension[4] = "aff";
+	char extension[4] = ".";
 	int llaveOpcion, i;
 	int a, b, inverso;
 
@@ -469,8 +470,9 @@ void descifrarAfin(){
 	//guardar en archivo con el mismo nombre del archivo del texto a cifrar con extension .aff
 	printf("descifrado: %s\n", plaintext);
 	fileNameAux = strtok(fileNameIn, extension);
+	strcat(fileNameAux, ".txt");
 	printf("%s\n", fileNameAux);
-	plaintextFile = fopen(fileNameOut, "w");
+	plaintextFile = fopen(fileNameAux, "w");
 	i = 0;
 	while(plaintext[i] != '\0'){
 		fprintf(plaintextFile, "%c", plaintext[i]);

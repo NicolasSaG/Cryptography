@@ -21,7 +21,8 @@ char * encodeAffine(char * plaintext, int a, int b){
 	int valuePlainText, result;
 
 	while(plaintext[i] != '\0'){
-		//recorrer el abecedario hasta encontrar la letra de plaintext multiplicar el valor por a y sumarle b
+		//recorrer el abecedario hasta encontrar la letra de plaintext 
+		//multiplicar el valor por a y sumarle b
 		//despues se le hace mod por el tam del alfabeto
 		valuePlainText = findValueBySymbol(plaintext[i]);
 		if(valuePlainText == -1){
@@ -41,7 +42,8 @@ char * decodeAffine(char * ciphertext, int a, int b){
 	int valueCipherText, result;
 	int inverse = inverseModularAritmethic(a, alphabetSize_GLOBAL);
 	while(ciphertext[i] != '\0'){
-		//recorrer el abecedario hasta encontrar la letra de plaintext multiplicar el valor por a y sumarle b
+		//recorrer el abecedario hasta encontrar la letra de plaintext 
+		//multiplicar el valor por a y sumarle b
 		//despues se le hace mod por el tam del alfabeto
 		valueCipherText = findValueBySymbol(ciphertext[i]);
 		if(valueCipherText == -1){
@@ -92,7 +94,8 @@ int inverseModularAritmethic(int a, int n){
   int result = n; int previousResult = a;
 	
   //printf("s=%d, t=%d, result=%d, olds=%d, oldt=%d, oldresult=%d,\n", s,t,result, inverse, old_t, previousResult);
-	while(result > 0){ // result tambien nos indica si al final es igual a 1 que a y n son coprimos
+	while(result > 0){ // result tambien nos indica si 
+		//al final es igual a 1 que a y n son coprimos
 		quotient = previousResult / result;
 		
 		aux = result;
