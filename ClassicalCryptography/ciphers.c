@@ -60,53 +60,9 @@ int main(){
 			default:
 				printf("Opcion no valida\n");
 			break;
-		}
-		
+		}		
 	}
 
-	//menu
-	/*
-		cifrar vigenere
-		descifrar vigenere
-		validar llave  de cifrado Afin
-		calcular inverso de llave valida de cifrado afin
-		cifrar afin
-		descifrar afin
-	*/
-
-	// FILE * f = fopen("alphabet.txt", "r");
-	// addAlphabet(f);
-
-	// char * plaintext, * ciphertext,* key2, key [32];
-	// plaintext = malloc(sizeof(char) * 64);
-	// ciphertext = malloc(sizeof(char) * 64);
-	// printAlphabet();
-	// printf("Ingresa tu texto plano: ");
-	// gets(plaintext);
-	// printf("Ingresa tu llave: ");
-	// gets(key);
-	// printf("\nplaintext: %s\n", plaintext);
-	// printf("key: %s\n", key);
-	
-	// if(validWord(key) == -1){
-	// 	printf("No se encontro un caracter de la llave: %s en el alfabeto\n", key);
-	// 	exit(0);
-	// }
-	// printf("Encriptando...\n");
-	// ciphertext = encodeVigenere(plaintext, key);
-	// printf("cipher: %s\n", ciphertext);
-	
-	// plaintext = malloc(sizeof(char) * strlen(plaintext));
-	// printf("Desencriptando...\n");
-	// plaintext = decodeVigenere(ciphertext, key);
-	// printf("plaintext nuevo: %s\n", plaintext);
-	
-	// key2 = generateVigenereRandomKey();
-	// printf("Key random:|%s|\n", key2);
-
-	// free(key2);
-	// free(plaintext);
-	// free(ciphertext);
 	return 0;
 }
 
