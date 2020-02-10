@@ -21,8 +21,7 @@ char * encodeAffine(char * plaintext, int a, int b){
 	int valuePlainText, result;
 
 	while(plaintext[i] != '\0'){
-		//recorrer el abecedario hasta encontrar la letra de plaintext 
-		//multiplicar el valor por a y sumarle b
+		//recorrer el abecedario hasta encontrar la letra de plaintext multiplicar el valor por a y sumarle b
 		//despues se le hace mod por el tam del alfabeto
 		valuePlainText = findValueBySymbol(plaintext[i]);
 		if(valuePlainText == -1){

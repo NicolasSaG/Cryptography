@@ -175,7 +175,6 @@ void cifrarVigenere(){
 		fprintf(ciphertextFile, "%c", ciphertext[i]);
 		i++;
 	}
-	fprintf(ciphertextFile, "\0");
 	fclose(plaintextFile);
 	fclose(ciphertextFile);
 }
@@ -246,7 +245,6 @@ void descifrarVigenere(){
 		fprintf(plaintextFile, "%c", plaintext[i]);
 		i++;
 	}
-	fprintf(plaintextFile, "\0");
 	fclose(plaintextFile);
 	fclose(ciphertextFile);
 	//cifrado vigenere terminado matar FILE
@@ -362,7 +360,6 @@ void cifrarAfin(){
 		i++;
 	}
 	printf("Llave usada para cifrar: (%d, %d)\n", a, b);
-	fprintf(ciphertextFile, "\0");
 	fclose(plaintextFile);
 	fclose(ciphertextFile);
 }
@@ -434,7 +431,6 @@ void descifrarAfin(){
 		fprintf(plaintextFile, "%c", plaintext[i]);
 		i++;
 	}
-	fprintf(plaintextFile, "\0");
 	fclose(plaintextFile);
 	fclose(ciphertextFile);
 }
