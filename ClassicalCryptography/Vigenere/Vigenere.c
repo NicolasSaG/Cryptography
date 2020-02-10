@@ -12,6 +12,8 @@ void cifrarVigenere();
 void descifrarVigenere();
 void validarLlaveAfin();
 void calcularInversoLlaveAfin();
+void cifrarAfin();
+void descifrarAfin();
 
 int main(){
 	int opcion = 0;
@@ -38,6 +40,14 @@ int main(){
 			case 4:
 				printf("Calcular inverso de llave valida k=(a, b) y n\n");
 				calcularInversoLlaveAfin();
+			break;
+			case 5:
+				printf("Cifrar texto con Afin\n");
+				cifrarAfin();
+			break;
+			case 6:
+				printf("Descifrar texto con Afin\n");
+				descifrarAfin();
 			break;
 			case 7:
 				printf("Ingrese ruta del alfabeto: \n");
@@ -123,11 +133,8 @@ int opciones(){
 	printf("2 Descifrar texto con Vigenere\n");
 	printf("3 Validar llave de cifrado afin\n");
 	printf("4 Calcular inverso de llave valida de cifrado afin\n");
-	// validar llave  de cifrado Afin
-	// 	calcular inverso de llave valida de cifrado afin
-	// 	cifrar afin
-	// cargar otro alfabeto
-	// 	descifrar afin
+	printf("5 Cifrar texto con Afin\n");
+	printf("6 Descifrar texto con Afin\n");
 	printf("7 Cargar otro alfabeto\n");
 	printf("8 Salir\n");
 	scanf("%d", &opcion);
@@ -215,7 +222,6 @@ void cifrarVigenere(){
 	fprintf(ciphertextFile, "\0");
 	fclose(plaintextFile);
 	fclose(ciphertextFile);
-	//cifrado vigenere terminado matar FILE
 }
 
 void descifrarVigenere(){
@@ -319,4 +325,158 @@ void calcularInversoLlaveAfin(){
 	inv = inverseModularAritmethic(a, n);
 	printf("a^-1modn = %d^-1mod%d = %d\n", a, n, inv);
 	printf("%d*%dmod%d = 1\n", a, inv , n);
+}
+
+void cifrarAfin(){
+	FILE * plaintextFile, * ciphertextFile;
+	int bufferLength =1024 * 20;
+	char fileNameIn[256], fileNameOut[256], buffer[bufferLength], * key, * ciphertext;
+	char c;
+	int llaveOpcion, i;
+	int a, b, inverso;
+
+	ciphertext = malloc(sizeof(char) * bufferLength);
+
+	// pedir archivo del texto a cifrar
+	printf("Ingresa la ruta del texto a cifrar: ");
+	fflush(stdin);
+	gets(fileNameIn);
+	do{
+		plaintextFile = fopen(fileNameIn, "r");
+		if (plaintextFile == NULL){
+			printf("No se pudo abrir el archivo %s\n", fileNameIn);
+			printf("Ingrese una ruta valida: ");
+			fflush(stdin);
+			gets(fileNameIn);
+		}else{
+			printf("Archivo con texto a cifrar cargado.\n");
+		}
+	}while(plaintextFile == NULL);
+
+	//pedir llave o generar random
+	while(1){
+		printf("\nDesea ingresar una llave (0) o que se genere pseudo aleatoriamente (1)?: ");
+		fflush(stdin);
+		scanf("%d", &llaveOpcion);
+		if(llaveOpcion == 0){
+			do{
+				printf("\nIngrese la llave como :a, b\n");
+				fflush(stdin);
+				scanf("%d, %d", &a, &b);
+				//validar llave
+				if(gcd(a, alphabetSize_GLOBAL) != 1){
+					printf("\nIngrese una llave Valida (a=%d debe ser coprimo de n=%d): ", a, alphabetSize_GLOBAL);
+				}else{
+					break;
+				}
+			}while(gcd(a, alphabetSize_GLOBAL) != 1);
+			break;
+		}else if(llaveOpcion == 1){
+			a = generateAffineARandomKey(alphabetSize_GLOBAL);
+			b = generateAffineBRandomKey(alphabetSize_GLOBAL);
+			break;
+		}else{
+			printf("\nIngrese una opcion valida (0 o 1): ");
+		}
+	}
+
+	printf("Llave: k = (%d, %d)\n", a, b);
+	i = 0;
+	//guardar texto de archivo en buffer
+	while((c = fgetc(plaintextFile))  != EOF){
+		buffer[i] = c;
+		i++;
+	}
+	buffer[i] = '\0';
+	printf("\n");
+	printf("Texto: %s\n", buffer);
+
+	//cifrar
+	printf("Cifrando texto... \n");
+	ciphertext = encodeAffine(buffer, a, b);
+
+	//guardar en archivo con el mismo nombre del archivo del texto a cifrar con extension .aff
+	printf("Cifrado: %s\n", ciphertext);
+	strcpy(fileNameOut, fileNameIn);
+	strcat(fileNameOut, ".aff");
+	ciphertextFile = fopen(fileNameOut, "w");
+	i = 0;
+	while(ciphertext[i] != '\0'){
+		fprintf(ciphertextFile, "%c", ciphertext[i]);
+		i++;
+	}
+	fprintf(ciphertextFile, "\0");
+	fclose(plaintextFile);
+	fclose(ciphertextFile);
+}
+
+void descifrarAfin(){
+	FILE * plaintextFile, * ciphertextFile;
+	int bufferLength =1024 * 20;
+	char fileNameIn[256], fileNameOut[256], *fileNameAux, buffer[bufferLength], * key, * plaintext;
+	char c;
+	char extension[4] = "aff";
+	int llaveOpcion, i;
+	int a, b, inverso;
+
+	plaintext = malloc(sizeof(char) * bufferLength);
+
+	// pedir archivo del texto a cifrar
+	printf("Ingresa la ruta del texto a descifrar: ");
+	fflush(stdin);
+	gets(fileNameIn);
+	do{
+		ciphertextFile = fopen(fileNameIn, "r");
+		if (ciphertextFile == NULL){
+			printf("No se pudo abrir el archivo %s\n", fileNameIn);
+			printf("Ingrese una ruta valida: ");
+			fflush(stdin);
+			gets(fileNameIn);
+		}else{
+			printf("Archivo con texto a descifrar cargado.\n");
+		}
+	}while(ciphertextFile == NULL);
+
+	//pedir llave o generar random
+	do{
+		printf("\nIngrese la llave como :a, b\n");
+		fflush(stdin);
+		scanf("%d, %d", &a, &b);
+		//validar llave
+		if(gcd(a, alphabetSize_GLOBAL) != 1){
+			printf("\nIngrese una llave Valida (a=%d debe ser coprimo de n=%d): ", a, alphabetSize_GLOBAL);
+		}else{
+			break;
+		}
+	}while(gcd(a, alphabetSize_GLOBAL) != 1);
+			
+
+	printf("Llave: k = (%d, %d)\n", a, b);
+	i = 0;
+	//guardar texto de archivo en buffer
+	while((c = fgetc(ciphertextFile))  != EOF){
+		buffer[i] = c;
+		i++;
+	}
+	buffer[i] = '\0';
+	printf("\n");
+	printf("Texto: %s\n", buffer);
+
+	//cifrar
+	printf("descifrando texto... \n");
+	plaintext = decodeAffine(buffer, a, b);
+
+	//guardar en archivo con el mismo nombre del archivo del texto a cifrar con extension .aff
+	printf("descifrado: %s\n", plaintext);
+	fileNameAux = strtok(fileNameIn, extension);
+	printf("%s\n", fileNameAux);
+	plaintextFile = fopen(fileNameOut, "w");
+	i = 0;
+	while(plaintext[i] != '\0'){
+		fprintf(plaintextFile, "%c", plaintext[i]);
+		i++;
+	}
+	fprintf(plaintextFile, "\0");
+	fclose(plaintextFile);
+	fclose(ciphertextFile);
 }

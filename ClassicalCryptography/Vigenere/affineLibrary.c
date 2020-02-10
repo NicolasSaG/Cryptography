@@ -1,5 +1,9 @@
-#include "affineLibrary.h"
 #include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include "alphabet.h"
+#include "affineLibrary.h"
+
 
 int validateAffineKey(int a, int n){
 	//la llave es valida si mcd(a, n) = 1
@@ -8,6 +12,76 @@ int validateAffineKey(int a, int n){
 	}else{
 		return -1;
 	}
+}
+
+//ci = (a*mi + b)modn
+char * encodeAffine(char * plaintext, int a, int b){
+	char * ciphertext  = malloc(sizeof(char) * (strlen(plaintext) + 1));
+	int i = 0;
+	int valuePlainText, result;
+
+	while(plaintext[i] != '\0'){
+		//recorrer el abecedario hasta encontrar la letra de plaintext multiplicar el valor por a y sumarle b
+		//despues se le hace mod por el tam del alfabeto
+		valuePlainText = findValueBySymbol(plaintext[i]);
+		if(valuePlainText == -1){
+			ciphertext[i] = plaintext[i];
+		}else{
+			result = ((valuePlainText*a) + b) % alphabetSize_GLOBAL;
+			ciphertext [i] = findSymbolByValue(result);
+		}
+		i++;
+	}
+	return ciphertext;
+}
+//mi = a^-1(ci - b)modn
+char * decodeAffine(char * ciphertext, int a, int b){
+	char * plaintext  = malloc(sizeof(char) * (strlen(ciphertext) + 1));
+	int i = 0;
+	int valueCipherText, result;
+	int inverse = inverseModularAritmethic(a, alphabetSize_GLOBAL);
+	while(ciphertext[i] != '\0'){
+		//recorrer el abecedario hasta encontrar la letra de plaintext multiplicar el valor por a y sumarle b
+		//despues se le hace mod por el tam del alfabeto
+		valueCipherText = findValueBySymbol(ciphertext[i]);
+		if(valueCipherText == -1){
+			plaintext[i] = ciphertext[i];
+		}else{
+			//aprovechando la propiedad de aritmetica modular
+			//(a*b)modn = (amodn *bmodn)modn
+			result = findValueBySymbol(ciphertext[i]) - b;
+			if(result < 0)
+				result = alphabetSize_GLOBAL + result;
+
+			result = result % alphabetSize_GLOBAL;
+			result = (result * inverse) % alphabetSize_GLOBAL;
+			plaintext [i] = findSymbolByValue(result);
+
+		}
+		i++;
+	}
+	return plaintext;
+}
+
+int generateAffineARandomKey(int n){
+	int a = 0, i;
+	time_t t;
+	srand((unsigned) time(&t));
+	//error checar a no sale coprima de n
+	while(1){
+		a = rand() % n;
+		if(gcd(a, n) == 1 && a != 0){
+			break;
+		}
+	}
+	return a;
+}
+
+int generateAffineBRandomKey(int n){
+	time_t t;
+	srand((unsigned) time(&t));
+	int b = rand() % n;
+	return b; 
 }
 
 int inverseModularAritmethic(int a, int n){
