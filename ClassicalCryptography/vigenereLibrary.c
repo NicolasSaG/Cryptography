@@ -60,7 +60,7 @@ char * generateVigenereRandomKey(){
 	int i;
 	time_t t;
 	srand((unsigned) time(&t));
-	int r = (rand() % alphabetSize_GLOBAL) + 1;
+	int r = (rand() % 15) + 1;
 	char * key = malloc(sizeof(char) * r);
 	for(i = 0; i < r; i++){
 		key[i] = findSymbolByValue(rand()%alphabetSize_GLOBAL);

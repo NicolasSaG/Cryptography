@@ -150,7 +150,7 @@ void cifrarVigenere(){
 		}
 	}
 
-	printf("Llave: %s\n", key);
+	printf("Llave: |%s|\n", key);
 	i = 0;
 	//guardar texto de archivo en buffer
 	while((c = fgetc(plaintextFile))  != EOF){

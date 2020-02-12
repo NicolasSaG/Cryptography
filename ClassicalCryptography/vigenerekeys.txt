@@ -1,0 +1,8 @@
+
+vigenre
+llave1: |zsxkesxhtwu| para ejemplo2.txt y ej4.txt con a.txt
+
+llave2: |8oep33aw3hpgpjs| para ejemplo3.txt ej5.txt con a3.txt
+
+
+
