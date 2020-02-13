@@ -1,31 +1,143 @@
 LINEA 1
 LzxinâiUw8R)d8t2r)ymuâaRi7r)c8v6enziu.rpeqN1i.kvnr”imztqâSZ4cx[9i5gi.3iGi5T)v24rr3gâfâ Hs1L6e™tno3kiuâeYâ1Jn w3v.)Gpj8uFq}Itc,3z
+
 Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce vitae libero viverra ex congue laoreet et nec dui. Aliquam dictum
 								|								|								|								|								|								|								|								
-algeb a en  atinalgeb a en  atinalgeb a en  atinalgeb a en  atinalgeb a en  atinalgeb a en  atinalgeb a en  atinalgeb a en  atin
+algebraFenFlatinalgebraFenFlatinalgebraFenFlatinalgebraFenFlatinalgebraFenFlatinalgebraFenFlatinalgebraFenFlatinalgebraFenFlatin
 
 LINEA 2
-,)gvd. aiyp1rx2vux”xj5cNh8S5,™1nptkr.5iGl}Xpm9m5 y1pmr,prrH)u525inkw.,eQm7p7e5q7 lzâtrpNi1q)C-znbtzysâeLi7p1o 27i5uv.weQm6q)P wvn)rep9eJx}Uz
-, arcu vel pretium tincidunt, sapien nibh semper nulla, nec ultrices velit velit at sapien. Curabitur eget porttitor felis. Proin laoreet po
+,)gvd. aiyp1rx2vux”xj5cNh8S5,™1nptkr.5iGl}Xpm9m5 y1pmr,prrH)u525inkw.,eQm7p7e5q7 lzâtrpNi1q)C-znbtzysâeLi7p1o 27i5uv.weQm6q)P wv
+, arcu vel pretium tincidunt, sapien nibh semper nulla, nec ultrices velit velit at sapien. Curabitur eget porttitor felis. Proi
 								|								|								|								|								|								|								|								|						
-a   b a en  atina   b a  n  atina   b a  n  atina   b a  n  atina   b a  n  atina   b a  n  atina   b a  n  atina   b a  n  atina
+algebraFenFlatinalgebraFenFlatinalgebraFenFlatinalgebraFenFlatinalgebraFenFlatinalgebraFenFlatinalgebraFenFlatinalgebraFenFlatinalgebraFenFl
 
+Linea 3																																																													
+n)rep9eJx}Uzs-m5e)yin™ Nr}Fnc-u6ay”pp9eRâuJyd m5i5”me€ 'yvX2ux[5u5xynâvJw7Nmu53z yowmâvNxnJ)t2vpio1ru€ }y1H)m8tyi4”emzqZezppr81*
+n laoreet posuere sem, in accumsan lorem hendrerit id. Quisque rutrum vestibulum nisl vitae tincidunt. Nunc mollis aliquam eros,
+								|								|								|								|								|								|								|								|							
+algebraFenFlatinalgebraFenFlatinalgebraFenFlatinalgebraFenFlatinalgebraFenFlatinalgebraFenFlatinalgebraFenFlatinalgebraFenFlatin
+
+929mod16 = 1, l = 11; en 930 descifrado esta un punto = 37, { esta en 48
+558mod16 = 14, i = 8, 432 esta una coma = 38; 38 +8, ( esta en 46
+430mod16 = 14, i = 8; en descifrado en 431 esta un punto =37, ] esta en 45
+
+rellenando abecedario v6  bien aburrido x                                                      espacio 																			'
+a b c d e f g h i j k  l  m  n  o  p  q  r  s  t  u  v  w  x  y  z  1  2  3  4  5  6  7  8  9  0     .  ,  -  â     ”  _  [  ]  (  )  {  }  +
+0 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 21 22 23 24 25 26 27 28 29 30 31 32 33 34 35 36 37 38 39 40 41 42 43 44 45 46 47 48 49 50
+ 
+*     â  €  ™  :  A  D  E  F  G  H  I  J  J  L  M  N  O  P  Q  R  S  T  U  V  W  X  Y  Z
+51 52 53 54 55 56 57 58 59 60 61 62 63 64 65 66 67 68 69 70 71 72 73 74 75 76 77 78 79 80
+
+
+localizar a : en alfabeto
+1661mod16 = 13, t = 19, en el descifrado en 1662 esta el caracter es un punto = 37, 37 + 19
+
+rellenando abecedario v5                                                                       espacio
+a b c d e f g h i j k  l  m  n  o  p  q  r  s  t  u  v  w  x  y  z  1  2  3  4  5  6  7  8  9  0     .  ,  -  â     ”  _  [        )     }  +
+0 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 21 22 23 24 25 26 27 28 29 30 31 32 33 34 35 36 37 38 39 40 41 42 43 44 45 46 47 48 49 50
+ 
+*     â  €  ™  :  A  D  E  F  G  H  I  J  J  L  M  N  O  P  Q  R  S  T  U  V  W  X  Y  Z
+51 52 53 54 55 56 57 58 59 60 61 62 63 64 65 66 67 68 69 70 71 72 73 74 75 76 77 78 79 80
+
+
+
+
+aprovechando mod, encontramos en elcifrado los caracteres faltantes, su posicion en el texto -1 mod 16 y es el caracter con de K con el que se cifran
++ 879mod16 = 15, se cifra con n=13, buscamos el caracter 880 en el descifrado, es un punto . encontramos + en alfabeto
+_ en 3682mod16 = 2, se cifra con g = 6, buscamos caracter 3683 en descrifrado, es un punto . encontramos _
+Con este alfabeto intente 
+
+rellenando abecedario v4 supuestas con linea 3                                                 espacio
+a b c d e f g h i j k  l  m  n  o  p  q  r  s  t  u  v  w  x  y  z  1  2  3  4  5  6  7  8  9  0     .  ,  -        ”  _  [        )     }  +
+0 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 21 22 23 24 25 26 27 28 29 30 31 32 33 34 35 36 37 38 39 40 41 42 43 44 45 46 47 48 49 50
+ 
+*     â  €  ™  B  C  D  E  F  G  H  I  J  J  L  M  N  O  P  Q  R  S  T  U  V  W  X  Y  Z
+51 52 53 54 55 56 57 58 59 60 61 62 63 64 65 66 67 68 69 70 71 72 73 74 75 76 77 78 79 80
+																														
+
+rellenando abecedario v3 supuestas                                                             espacio  
+a b c d e f g h i j k  l  m  n  o  p  q  r  s  t  u  v  w  x  y  z  1  2  3  4  5  6  7  8  9  0     .  ,  -        ”     [        )     }  
+0 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 21 22 23 24 25 26 27 28 29 30 31 32 33 34 35 36 37 38 39 40 41 42 43 44 45 46 47 48 49 50
+ 
+      â     ™  B  C  D  E  F  G  H  I  J  J  L  M  N  O  P  Q  R  S  T  U  V  W  X  Y  Z
+51 52 53 54 55 56 57 58 59 60 61 62 63 64 65 66 67 68 69 70 71 72 73 74 75 76 77 78 79 80 81
+
+
+
+rellenando abecedario v2  rellenadas y validadas por cifrado y llave                           espacio
+a b c d e f g h i j k  l  m  n  o  p  q  r  s  t  u  v  w  x  y  z  1  2  3  4  5  6  7  8  9  0     .        â                    )        
+0 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 21 22 23 24 25 26 27 28 29 30 31 32 33 34 35 36 37 38 39 40 41 42 43 44 45 46 47 48 49 50
+ 
+                           F  G  H                 N           R                    Y
+51 52 53 54 55 56 57 58 59 60 61 62 63 64 65 66 67 68 69 70 71 72 73 74 75 76 77 78 79 80 81
 
 
 llave chida (16):
 								|  
-algeb a en  atin
+algebraFenFlatin
+
+v+k = a, (21 + k)mod81 = 0   .. k = 60
+con esto puedo encontrar las letras que salten de una conocida a la cifrada y saber la posicion de la letra cifrada en el alfabeto
+busco en la 8va letra de cada trama a donde salta la cifrada, si conozco la posicion de la original puedo complentar el alfabeto.
+algebra en latin
+			( ) no se cual es todavia pero las recorre 60 espacios
+
+conociendo este alfabeto, encontramos que (m+k)mod81 = R  ...  (12 + k) = 72 ... k = 60
+con este alfabeto buscamos las letras que faltan junto con la llave completa
+analizando los primeros 272 caracteres encontramos el alfabeto v3	(linea 1 y 2)		
+
+hice un programa para leer el conjunto de caracteres en el archivo, encontre que hay al 81 caracteres al menos, ya que una una minima posibilidad de que un caracter del alfabeto no haya sido sustituido por los del alfabeto. Pero lo descarto despues ya que hice lo mismo con el tro archivo y tambien me diol 81 caracteres. sus conjuntos son iguales. Con eso determino la longitud del alfabeto 
+
+algebra en latin
+con esta llave infiero que los caracteres de espacios en blanco en realidad son espacios en blanco. Bajo esa suposicion, reviso bloque por bloque el caracter que se cifra y le sumo el espacio, a esa posicion le corresponde el caracter cifrado en el alfabeto, asi encuentro la R, U (no es valida para ciertos valores se descarta)
+
+
+
+algebra en latin
+			( ) no se cual es todavia pero las recorre 60 espacios
+con esta llave infiero que los caracteres de espacios en blanco en realidad son espacios en blanco. Bajo esa suposicion, reviso bloque por bloque el caracter que se cifra y le sumo el espacio, a esa posicion le corresponde el caracter cifrado en el alfabeto, asi encuentro la R, U
 
 incongruencias en en la llave con la o cuando se usa para cifrar
+
+v+k = a, (21 + k)mod81 = 0   .. k = 60
+
+algebra en latin
+			( ) no se cual es todavia pero las recorre 60 espacios
+
+
+
+
+
+rellenando abecedario creo mal
+a b c d e f g h i j k  l  m  n  o  p  q  r  s  t  u  v  w  x  y  z  1  2  3  4  5  6  7  8  9  _     .        â           I        )  R     O
+0 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 21 22 23 24 25 26 27 28 29 30 31 32 33 34 35 36 37 38 39 40 41 42 43 44 45 46 47 48 49 50
+ 
+U           Y  Z
+51 52 53 54 55 56 57 58 59 60 61 62 63 64 65 66 67 68 69 70 71 72 73 74 75 76 77 78 79 80 81
+
+
+
+Alfabeto base
+a b c d e f g h i j k  l  m  n  o  p  q  r  s  t  u  v  w  x  y  z  1  2  3  4  5  6  7  8  9  _     .  ,                          )        
+0 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 21 22 23 24 25 26 27 28 29 30 31 32 33 34 35 36 37 38 39 40 41 42 43 44 45 46 47 48 49 50
+
+
+51 52 53 54 55 56 57 58 59 60 61 62 63 64 65 66 67 68 69 70
+
+a  _  _  _  b  _  a  _  _  o  _  m  a  _  _  o
+0  11       1     0        14    12 0        14
+
 
 abcdefghijklmnopqrstuvwxyz 123456789 _         
 0        9         19		     29			 37
 
-a b c d e f g h i j k  l  m  n  o  p  q  r  s  t  u  v  w  x  y  z  1  2  3  4  5  6  7  8  9  _     .
-0 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 21 22 23 24 25 26 27 28 29 30 31 32 33 34 35 36 37
+encontre la coma con la longitud del alfabeto, k = espacio en blanco, m = , y c=r, 17+57-36=38(,)
 
-a  _  _  _  b  _  a  _  _  o  _  m  a  _  _  o
-0  11       1     0        14    12 0        14
+encontre un espacio que se cifra con otro espacio y me da un caracter p conocido, de ahi puedo calcular la longitud del alfabeto
+(36+36)modn = 15
+72-15 = n = 57
+encontramos la longitud del alfabeto.
+
 
 despues del espacio inmediatamente despues va el punto el el alfabeto
 Encontrada la F 14 carecteres despues esta la S

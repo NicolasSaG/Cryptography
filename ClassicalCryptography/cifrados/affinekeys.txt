@@ -1,0 +1,2 @@
+llave1 =(11, 11) ejemplo6.txt y ejemplo7.txt y con a.txt
+llave2(12, 12) ejemplo8 y ejjemplo9.txt con a3.txt
