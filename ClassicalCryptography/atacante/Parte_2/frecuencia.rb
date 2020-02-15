@@ -8,24 +8,45 @@ class LetterHistogram
   end
 
   def display
-    sum = 0
     i = 0
     arrayAux = Array.new
+    charAux = Array.new
     calculate_frequencies.each { 
       |letter, freq| 
       s = letter.downcase
       arrayAux[i] = freq.to_f/@text.length;
+      charAux[i] = s
       i += 1 
       #puts "#{letter}: #{freq.round(5)}, frecTotal: #{(freq.to_f/@text.length).round(5)} * frecLetra:#{@letters[s]} = #{((freq.to_f/@text.length)*@letters[s]).round(5)}" 
-      sum += (freq.to_f/@text.length)*@letters[s]
+      #sum += (freq.to_f/@text.length)*@letters[s]
+
     }
+    #rotamos el array
+    max = 0
+    max_i = 0
     for j in 0..i
+      #puts("#{j}: #{arrayAux}\n\n")
+      #multiplicamos y calculamos la suma
+      sum = 0
+
+      for k in 0..i
+        #chi = charAux[k]
+        #chi.downcase!
+        frecEng = @letters[charAux[k]]
+        sum += (frecEng.to_f*arrayAux[k].to_f)
+      end
+      if(sum > max)
+        max = sum
+        max_i = j
+      end
+
+      #puts("sum #{j}: #{sum.round(7)}")
       auxFrec = arrayAux[0]
       arrayAux.delete_at(0)
       arrayAux.push(auxFrec)
-      
     end
-    puts("total: #{@text.length} \t\t \t\t \t\t  \t\t\t\t\t\t\t\t sum: #{sum.round(5)}")
+    puts(" max #{max_i}= #{max}")
+    #puts("total: #{@text.length} \t\t \t\t \t\t  \t\t\t\t\t\t\t\t sum: #{sum.round(5)}")
     #puts("#{arrayAux}")
   end
 

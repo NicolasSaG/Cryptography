@@ -1,3 +1,4 @@
 Alfabeto MessageTwo.txts.vig: #<Set: {"a", ".", "L", "y", "m", "Z", "k", "E", "J", "D", "r", "O", "-", "?", "\"", "A", "q", "K", "x", "I", "z", "M", "V", "p", "X", "h", "S", ";", "Y", "c", "W", "v", "R", "d", "i", "Q", "U", "N", "n", "f", "C", "e", "t", "H", " ", "T", "F", "g", "l", "!", ",", "P", "o", "j", "b", "G", "B", "u", ":", "'", "w", "s"}>
 Alfabeto size: 62
 ===================
+abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ.-?\; !,:'
