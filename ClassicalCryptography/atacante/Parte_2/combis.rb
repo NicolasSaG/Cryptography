@@ -110,14 +110,14 @@ r0 = ""
 r11 = ""
 r12 = ""
 
-x = k0.length
-k0.split
-m0.split
+x = k12.length
+k12.split
+m12.split
 
 for j in 0..x-1
-  m = k0[j]
-  n = m0[j]
-  r0 += m + n
+  m = k12[j]
+  n = m12[j]
+  #r0 += m + n
   puts m + n
   puts ""
   
