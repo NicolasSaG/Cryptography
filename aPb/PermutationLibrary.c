@@ -1,29 +1,40 @@
 #include <stdio.h>
+#include <stdlib.h>
+#include "Sort.h"
 #include "PermutationLibrary.h"
 
-void inversePermutation( int n, int  permutation[][n]){
-	int inverse [2][n];
+
+int * inversePermutation(int n, int  permutation[n]){
+	int * inverse = malloc(sizeof(int)*n);
+	int inverseAux[n][2];
 	int i;
 	int * j;
-	//voltar valores de aux, 
+	 
+	//identificar valores
 	for(i = 0; i < n; i++){
-		inverse[0][i] = permutation[1][i];
-		inverse[1][i] = permutation[0][i];
+		inverseAux[i][0] = i;
+		inverseAux[i][1] = permutation[i];
 	}
-
-	//se guardan los varoles en el array original si se trabaja dentro de la funcion
-	//permutation[0][1] = 5;
-
-	printPermutation(n, inverse);
+	// 0 1 2 3
+	// 2 0 3 1
+	//ordenar los de arriba respecto a la fila de abajo
+	printPermutation(n, inverseAux);
+	mergeBidimentionalSort(n, inverseAux, 0, n-1);
+	printPermutation(n, inverseAux);
 	//ordenar valores
-	
-
-	//return permutation;
+	for(i = 0; i < n; i++)
+		inverse[i] = inverseAux[i][0]; 
+	return inverse;
 }
 
-void printPermutation(int n, int permutation[][n]){
+void printPermutation(int n, int permutation[n][2]){
 	int i;
 	for(i = 0; i < n; i++){
-		printf("%d  %d\n", permutation[0][i], permutation[1][i]);
+		printf("%d ", permutation[i][0] +1);
 	}
+	printf("\n");
+	for(i = 0; i < n; i++){
+		printf("%d ", permutation[i][1]);
+	}
+	printf("\n");
 }

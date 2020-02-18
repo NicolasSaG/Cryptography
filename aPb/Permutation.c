@@ -1,12 +1,11 @@
 #include <stdio.h>
-
 #include "PermutationLibrary.h"
+#include "Sort.h"
 
 int main(){
 
-	int prueba [2][3] = {{0,1,2},{2,0,1}};
+	int prueba [5] = {4,3,1,5,2};
 	
-	inversePermutation(3, prueba);
-	printPermutation(3, prueba);
+	inversePermutation(5, prueba);
 	return 0;
 }
