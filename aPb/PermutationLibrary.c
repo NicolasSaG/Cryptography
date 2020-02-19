@@ -27,15 +27,29 @@ int * inversePermutation(int n, int  permutation[n]){
 	return inverse;
 }
 
+
+void permuteteBits(char * string, int n, int permutation[n]){
+	/*
+	printf("Permutada:%s|\n", h);
+	for (i = 0; i < 8; i++) {
+      printf("%d", !!((65 << i) & 0x80));
+  }
+  printf("\n|%d|\n", ((65 << 1) & 0x80));
+	*/
+	return;
+}
+
 //string.length == n
 void permuteString(char * string, int n, int permutation[n]){
 	int i;
 	char * auxString = malloc(sizeof(char) * n);
 	memcpy(auxString + 0, string + 0, n);
  	char c;
+ 	printf("|%s|\n", auxString);
  	for(i = 0; i < n; i++){
 		string[i] = auxString[permutation[i]-1];
 	}
+	printf("|%s|\n", string); 	
 }
 
 void printPermutation(int n, int permutation[n][2]){
