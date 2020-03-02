@@ -1,9 +1,31 @@
 #include <stdio.h>
 #include "DESLibrary.h"
 
+char encodeDESSimplified(char m, int n){
+	unsigned char c;
+	//aplicar a m permutaicon inicial
+	int initialPermutation[8] = {2, 6, 3, 1, 4, 8, 5, 7};
+	c = permutateDataBitLevel(n, initialPermutation, m);
+
+	//ronda 1
+	//dividir a la mitad en bits
+
+	//se toman 4 bits menos significativos y se les aplica permutacion de expansion
+	int expansionPermutation[8] = {4, 1, 2, 3, 2, 3, 4, 1};
+	//rExpandida = permutationExpansion();
+	
+	//xor de rExtendida con k1
+
+	//buscar en las s-boxs
+
+	//
+
+	return c;
+}
+
 void findKn(int k, int n, int permutation[n]){
 	//permutar a k
-	int kp, k1, k2;
+	int kp;
 	kp = permutateDataBitLevel(n, permutation, k);
 	kp = circularOneLeftShift(kp);
 
