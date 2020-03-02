@@ -1,6 +1,5 @@
-//void generateKn(int n, int kActual[n], int kNext[n]);
-
-int permutateCharBitLevel(int n, int permutation[n], char data);
-
-//void generatePermutation(int size, int permutation[size]);
+void findKn(int k, int n, int permutation[n]);
+int circularOneLeftShift(int k);
+int permutateDataBitLevel(int n, int permutation[n], int data);
+int permutationCompression(int n, int permutation[n], int data, int pos);
 int getBitValue(int data, int bit);

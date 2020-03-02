@@ -2,14 +2,14 @@
 #include "DESLibrary.h"
 
 int main(int argc, char const *argv[]){
-	int a = 96, i, aP;
-	int permutation[8] = {2, 4, 6, 8, 1, 3, 5, 7};
+	int a = 228, i, aP;
+	int permutation[8] = {7, 8, 6, 4, 3, 5};
 
 	printf("a=%d\n", a);
 	for(i = 7; i >= 0; i--)
 		printf("%d", getBitValue(a, i));
 
-	aP = permutateCharBitLevel(8, permutation, a);
+	aP = permutationCompression(8, permutation, a, 2);
 	printf("\na permutada= %d\n", aP);
 	for(i = 7; i >= 0; i--)
 		printf("%d", getBitValue(aP, i));
