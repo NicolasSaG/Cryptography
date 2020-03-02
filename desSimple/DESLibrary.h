@@ -2,7 +2,7 @@
 int k1;
 int k2;
 
-char encodeDESSimplified(char c, int n, int initialPermutation[n]);
+char encodeDESSimplified(unsigned char c, int n, int initialPermutation[n]);
 void findKn(int k, int n, int permutation[n]);
 int circularOneLeftShift(int k);
 int permutateDataBitLevel(int n, int permutation[n], int data);

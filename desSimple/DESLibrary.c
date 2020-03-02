@@ -1,26 +1,69 @@
 #include <stdio.h>
 #include "DESLibrary.h"
 
-char encodeDESSimplified(char m, int n){
+unsigned char encodeDESSimplified(unsigned char m, int n){
 	unsigned char c;
 	//aplicar a m permutaicon inicial
 	int initialPermutation[8] = {2, 6, 3, 1, 4, 8, 5, 7};
 	c = permutateDataBitLevel(n, initialPermutation, m);
 
 	//ronda 1
-	//dividir a la mitad en bits
+	c = makeRound(c);
+	//girar r y l de c
+	c = changeLtoR(c);
 
-	//se toman 4 bits menos significativos y se les aplica permutacion de expansion
-	int expansionPermutation[8] = {4, 1, 2, 3, 2, 3, 4, 1};
-	//rExpandida = permutationExpansion();
+
+	//ronda 2
+	c = makeRound(c);
+	//aplicar a c la permutacion inversa de initialPermutation
 	
-	//xor de rExtendida con k1
-
-	//buscar en las s-boxs
-
-	//
+	//c = permutateDataBitLevel(n, inverseInitialPermutation, c);	
 
 	return c;
+}
+
+unsigned char changeLtoR(unsigned char c){
+	int result;
+	//obtener l
+	result = c & 0xf0;
+	//correrlos a la derecha
+	result = result >> 4;
+	//obtener los primeros 4 bits y correrlos a la izquierda
+	//sumar con el resultado
+	result += ((c & 0xf) << 4);0
+	return result;
+}
+
+
+int makeRound(unsigned char c){
+	unsigned char l, r, rExpandida, rXORk, sBoxResult;
+	unsigned char result;
+	//seprarar en l y r
+	l = c & 0xf0;
+	r = c & 0xf;
+
+	//aplicar Fk
+
+	//se toman r se les aplica permutacion de expansion
+	int expansionPermutation[8] = {4, 1, 2, 3, 2, 3, 4, 1};
+	rExpandida = permutateDataBitLevel(8, expansionPermutation, r);
+	//rExpandida xor k1
+	rXORk = rExpandida ^ k1;
+
+	//buscar en s0
+
+	//buscar en s1
+	sBoxResult = 15;
+
+	//permutamos los datos encontrados en las tablas
+	int p4[4] = {2, 4, 3, 1};
+	sBoxResult = permutateDataBitLevel(4, p4, sBoxResult);
+
+	//xor con l
+	l = sBoxResult ^ l;
+	result = l << 4;
+	result += r;
+	return result;
 }
 
 void findKn(int k, int n, int permutation[n]){
