@@ -68,6 +68,7 @@ int makeRound(unsigned char c){
 void findKn(int k, int n, int permutation[n]){
 	//permutar a k
 	int kp;
+	int i;
 	kp = permutateDataBitLevel(n, permutation, k);
 	kp = circularOneLeftShift(kp);
 
@@ -76,7 +77,7 @@ void findKn(int k, int n, int permutation[n]){
 	int compresion[8] = {6, 3, 7, 4, 8, 5, 10, 9};
 	//generar k1
 	k1 = permutationCompression(8, compresion, kp, 2);
-	
+
 	//corrimiento circular de 2 bits a izquierda
 	kp = circularOneLeftShift(kp);
 	kp = circularOneLeftShift(kp);
@@ -90,15 +91,19 @@ int circularOneLeftShift(int k){
 	int kfinal = 0;
 	int bitAux;
 	//separar k en 2 partes de 5 bits
-	kl = k & 0x3e0; //5 bits mas significativos
-	kr = k & 0x1f; //5 bits menos significativos
-
+	kl = 0x3e0 & k; //5 bits mas significativos
+	kr = 0x1f & k; //5 bits menos significativos
 	//1 corrimiento circular a la izquierda
-	bitAux = getBitValue(kl, 5);
+	int i;
+	//regresar kl a tam de 5 bits
+	kl = kl >> 5;
+	bitAux = getBitValue(kl, 4);
 	kl = kl << 1;
+	kl = 0x1f & kl;
 	kl += bitAux;
-	bitAux = getBitValue(kr, 5);
+	bitAux = getBitValue(kr, 4);
 	kr = kr << 1;
+	kr = 0x1f & kr;
 	kr += bitAux;
 
 	//concatenar
@@ -108,20 +113,20 @@ int circularOneLeftShift(int k){
 }
 
 int permutationCompression(int n, int permutation[n], int data, int pos){
-	int i;
+	int i,j;
 	int result = 0;
 	int bitPosition, bitValue;
-	for(i = pos; i < n; i++){
-		bitPosition = permutation[i-pos] - 1;
+	for(i = 0; i < n; i++){
+		bitPosition = permutation[i] - 1;
 		//obtener bit
-		bitValue = getBitValue(data, n - 1 - i);
-		result += (bitValue << n - 1 - bitPosition);
+		bitValue = getBitValue(data, n + pos - 1 - bitPosition);
+		result += (bitValue << (n - 1 - i));
 	}
 	return result;
 }
 
 int permutateDataBitLevel(int n, int permutation[n], int data){
-	int i,j;
+	int i;
 	int result = 0;
 	int bitPosition, bitValue;
 	for(i = 0; i < n; i++){
@@ -136,4 +141,12 @@ int permutateDataBitLevel(int n, int permutation[n], int data){
 int getBitValue(int data, int bit){
 	int i = 1 << bit;
 	return !!(data & i);
+}
+
+
+void printBinary(int n, int size){
+	int i;
+	for(i=0; i< size; i++)
+		printf("%d ", getBitValue(n, size-1-i));
+	printf("\n");
 }

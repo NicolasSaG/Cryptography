@@ -10,3 +10,4 @@ int circularOneLeftShift(int k);
 int permutationCompression(int n, int permutation[n], int data, int pos);
 int permutateDataBitLevel(int n, int permutation[n], int data);
 int getBitValue(int data, int bit);
+void printBinary(int n, int size);
