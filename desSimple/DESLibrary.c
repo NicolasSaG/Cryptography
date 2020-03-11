@@ -18,7 +18,7 @@ unsigned char encodeDESSimplified(unsigned char m, int n){
 	//aplicar a c la permutacion inversa de initialPermutation
 	
 	//c = permutateDataBitLevel(n, inverseInitialPermutation, c);	
-
+	
 	return c;
 }
 
@@ -30,10 +30,9 @@ unsigned char changeLtoR(unsigned char c){
 	result = result >> 4;
 	//obtener los primeros 4 bits y correrlos a la izquierda
 	//sumar con el resultado
-	result += ((c & 0xf) << 4);0
+	result += ((c & 0xf) << 4);
 	return result;
 }
-
 
 int makeRound(unsigned char c){
 	unsigned char l, r, rExpandida, rXORk, sBoxResult;
@@ -74,7 +73,7 @@ void findKn(int k, int n, int permutation[n]){
 
 	//permutacion de compresion
 	//crear permutacion de compresion
-	int compresion[8] = {7, 8, 6, 10, 9, 4, 3, 5};
+	int compresion[8] = {6, 3, 7, 4, 8, 5, 10, 9};
 	//generar k1
 	k1 = permutationCompression(8, compresion, kp, 2);
 	
@@ -122,14 +121,14 @@ int permutationCompression(int n, int permutation[n], int data, int pos){
 }
 
 int permutateDataBitLevel(int n, int permutation[n], int data){
-	int i;
+	int i,j;
 	int result = 0;
 	int bitPosition, bitValue;
 	for(i = 0; i < n; i++){
 		bitPosition = permutation[i] - 1;
 		//obtener bit
-		bitValue = getBitValue(data, n - 1 - i);
-		result += (bitValue << n - 1 - bitPosition);
+		bitValue = getBitValue(data, n - 1 - bitPosition);
+		result += (bitValue << (n - 1 - i));
 	}
 	return result;
 }

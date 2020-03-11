@@ -2,9 +2,11 @@
 int k1;
 int k2;
 
-char encodeDESSimplified(unsigned char c, int n, int initialPermutation[n]);
+unsigned char encodeDESSimplified(unsigned char m, int n);
+unsigned char changeLtoR(unsigned char c);
+int makeRound(unsigned char c);
 void findKn(int k, int n, int permutation[n]);
 int circularOneLeftShift(int k);
-int permutateDataBitLevel(int n, int permutation[n], int data);
 int permutationCompression(int n, int permutation[n], int data, int pos);
+int permutateDataBitLevel(int n, int permutation[n], int data);
 int getBitValue(int data, int bit);
