@@ -1,11 +1,11 @@
 #include <stdio.h>
 #include "DESLibrary.h"
 
-unsigned char encodeDESSimplified(unsigned char m, int n){
+unsigned char encodeDESSimplified(unsigned char m){
 	unsigned char c;
 	//aplicar a m permutaicon inicial
 	int initialPermutation[8] = {2, 6, 3, 1, 4, 8, 5, 7};
-	c = permutateDataBitLevel(n, initialPermutation, m);
+	c = permutateDataBitLevel(8, initialPermutation, m);
 
 	//ronda 1
 	c = makeRound(c);
