@@ -23,10 +23,10 @@ int main(int argc, char const *argv[]){
 	//if(*argv[2] == '0'){
 		//printf("Cifrando %s...\n", argv[1]);
 	printf("cifrando...\n");
-	unsigned char c = 'A';
-	printf("Letra A\n");
+	unsigned char c = 189;
+	printf("Letra A: ");
 	printBinary(c, 8);
-	
+	c = encodeDESSimplified(c);
 		//printf("Archivo cifrado\n");
 	//}
 	return 0;
