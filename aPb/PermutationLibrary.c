@@ -39,17 +39,34 @@ void permuteteBits(char * string, int n, int permutation[n]){
 	return;
 }
 
-//string.length == n
 void permuteString(char * string, int n, int permutation[n]){
-	int i;
-	char * auxString = malloc(sizeof(char) * n);
-	memcpy(auxString + 0, string + 0, n);
- 	char c;
- 	printf("|%s|\n", auxString);
- 	for(i = 0; i < n; i++){
-		string[i] = auxString[permutation[i]-1];
+	int i, j;
+	int sizeString;
+	sizeString = strlen(string);
+
+	//agregar padding
+	if(sizeString % n != 0){
+		for(j = 0; j < sizeString - (sizeString % n); j += n){
+			char * auxString = malloc(sizeof(char) * n);
+			memcpy(auxString + 0, string + j, n);
+		 	char c;
+		 	for(i = 0; i < n; i++){
+				string[i+j] = auxString[permutation[i]-1];
+			}
+			free(auxString);
+		}
+		
+	}else{
+		for(j = 0; j < sizeString; j += n){
+			char * auxString = malloc(sizeof(char) * n);
+			memcpy(auxString + 0, string + j, n);
+		 	char c;
+		 	for(i = 0; i < n; i++){
+				string[i+j] = auxString[permutation[i]-1];
+			}
+			free(auxString);
+		}	
 	}
-	printf("|%s|\n", string); 	
 }
 
 void printPermutation(int n, int permutation[n][2]){
