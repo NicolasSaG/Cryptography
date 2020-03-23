@@ -81,15 +81,83 @@ int main(int argc, char const *argv[]){
 		printf("%s\n", plainText);
 
 		//obtener texto cifrado con permmutacion
-		printf("psize=%d\n", pSize);
 		permuteString(plainText, pSize, permutationArray);
 		printf("Texto permutado: \n");
 		printf("%s\n", plainText);
+		printf("Guardando en archivo...\n");
+		char newName[64];
+		strcpy(newName, argv[1]);
+		strcat(newName, ".per");
+		out = fopen(newName, "w");
+		fprintf(out, "%s", plainText);
+		printf("El texto cifrado se ha guardado en %s\n", newName);
 	}else{
 		printf("Descrifrar archivo %s...\n", argv[1]);
-		//cargar archivo
-
+		permutacion = fopen(argv[2], "r");
+		//tam de permutacion
+		while((c = fgetc(permutacion)) != EOF){
+			if(c == ' '){
+				i++;
+			}
+		}
+		i++;
+		printf("tam per: %d\n", i);
 		//cargar permutacion
+		pSize = i;
+		int permutationArray[i];
+		int j;
+		for(j = 0; j < i; j++){
+			permutationArray[j] = 0;
+		}
+		rewind(permutacion);
+		i = 0;
+		while((c = fgetc(permutacion)) != EOF){
+			if(c == ' '){
+				i++;
+				count = 0;
+			}else{//convertir permutacion de hasta 2 digitos a decimal
+				if(count == 0){
+					permutationArray[i] = (c - '0');
+					count++;
+				} else if(count  == 1){
+					permutationArray[i] *= 10;
+					permutationArray[i] += (c - '0');
+				} else if(count  == 2){
+					permutationArray[i] *= 10;
+					permutationArray[i] += (c - '0');
+				}
+				count++;
+			}
+		}
+
+		printf("Permutacion cargada\n| ");
+		for(j = 0; j < i; j++){
+			printf("%d | ", permutationArray[j]);
+		}
+		printf("\n");
+
+		//Cargar archivo a cifrar
+		in = fopen(argv[1], "r");
+		i = 0;
+		while((c = fgetc(in)) != EOF){
+			plainText[i] = c;
+			i++;
+		}
+		plainText[i] = '\0';
+		printf("Texto cargado: \n");
+		printf("%s\n", plainText);
+
+		//obtener texto cifrado con permmutacion
+		permuteString(plainText, pSize, permutationArray);
+		printf("Texto permutado: \n");
+		printf("%s\n", plainText);
+		printf("Guardando en archivo...\n");
+		char newName[64];
+		strcpy(newName, argv[1]);
+		strcat(newName, ".per");
+		out = fopen(newName, "w");
+		fprintf(out, "%s", plainText);
+		printf("El texto cifrado se ha guardado en %s\n", newName);
 	}
 
 	// int prueba [5] = {3, 5,  2, 1, 4};

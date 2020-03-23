@@ -44,8 +44,8 @@ void permuteString(char * string, int n, int permutation[n]){
 	int sizeString;
 	sizeString = strlen(string);
 
-	//agregar padding
-	if(sizeString % n != 0){
+
+	if(sizeString % n != 0){ 	//con padding
 		for(j = 0; j < sizeString - (sizeString % n); j += n){
 			char * auxString = malloc(sizeof(char) * n);
 			memcpy(auxString + 0, string + j, n);
@@ -55,7 +55,15 @@ void permuteString(char * string, int n, int permutation[n]){
 			}
 			free(auxString);
 		}
-		
+		//padding
+		char * auxString = malloc(sizeof(char) * n);
+		memset(auxString, '|', n);
+		memcpy(auxString + 0, string + j, sizeString%n);
+		char c;
+		for(i = 0; i < n; i++){
+			string[i+j] = auxString[permutation[i]-1];
+		}
+		free(auxString);
 	}else{
 		for(j = 0; j < sizeString; j += n){
 			char * auxString = malloc(sizeof(char) * n);
