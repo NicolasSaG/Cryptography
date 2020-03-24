@@ -1,7 +1,7 @@
 //valores obtenidos de k al hacerle la permutacion y compresion y shifts circulares;
 int k1;
 int k2;
-
+void operationModeEncryptCBC(unsigned char * plaintext, unsigned char iv);
 unsigned char encodeDESSimplified(unsigned char m);
 unsigned char decodeDESSimplified(unsigned char c);
 unsigned char changeLtoR(unsigned char c);
