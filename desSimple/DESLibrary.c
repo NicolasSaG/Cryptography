@@ -1,4 +1,5 @@
 #include <stdio.h>
+#include <stdlib.h>
 #include "DESLibrary.h"
 
 //texto se lee, se guarda en variable, se le agrega terminador de linea y se pasa aqui
@@ -19,9 +20,26 @@ void operationModeEncryptCBC(unsigned char * plaintext, unsigned char iv){
 }
 
 
-// void operationModeDecryptCBC(unsigned char * ciphertext, unsigned char iv){
+void operationModeDecryptCBC(unsigned char * ciphertext, int length, unsigned char iv){
+	int i;
+	unsigned char m, aux;
+	//primer bloque xor con iv
+	m = ciphertext[0];
+	aux = ciphertext[0];
+	m = decodeDESSimplified(m);
+	m = iv ^ m;
 
-// }
+	ciphertext[0] = m;
+	i = 1;
+	while(i < length){
+		m = decodeDESSimplified(ciphertext[i]);
+		m = aux ^ m;
+		aux = ciphertext[i];
+		ciphertext[i] = m;
+		i++;
+	}
+	ciphertext[i] = '\0';
+}
 
 unsigned char encodeDESSimplified(unsigned char m){
 	unsigned char c;
@@ -226,4 +244,20 @@ void printBinary(int n, int size){
 	for(i=0; i< size; i++)
 		printf("%d ", getBitValue(n, size-1-i));
 	printf("\n");
+}
+
+int generateRandomKey(){
+	int i;
+	time_t t;
+	srand((unsigned) time(&t));
+	int key = (rand() % 1024);
+	return key;
+}
+
+int generateRandomIV(){
+	int i;
+	time_t t;
+	srand((unsigned) time(&t));
+	int iv = (rand() % 256);
+	return iv;
 }

@@ -4,6 +4,7 @@
 #include "DESLibrary.h"
 
 //gcc main.c DESLibrary.c -o main
+int hex2dec(char hex);
 
 int main(int argc, char const *argv[]){
 	int p10[10] = {3, 5, 2, 7, 4, 10, 1, 9, 8, 6};
@@ -16,11 +17,13 @@ int main(int argc, char const *argv[]){
 		exit(0);
 	}
 
+
 	if(memcmp(argv[2], "0", 1) == 0){ // cifrar con sdes
 		unsigned char buffer[1024*20];
 		char c;
 		char newName[64];
-		k = 5; //generar pseudo aleatoriamente
+		k = generateRandomKey(); //generar pseudo aleatoriamente
+		printf("k = %d\n", k);
 		//Encontrar k1 y k2 i guardar en globales
 		findKn(k, 10, p10);
 		//leer archivo a cifrar y guardarlo en buffer
@@ -35,7 +38,8 @@ int main(int argc, char const *argv[]){
 		int auxSize = strlen(buffer);
 		//printf("Buffer: %s\n", buffer);
 		printf("Cifrando con OM CBC...\n");
-		int iv = 100; //generar aleatoriamente
+		int iv = generateRandomIV(); //generar aleatoriamente
+		printf("IV = %d\n", iv);
 		operationModeEncryptCBC(buffer, iv);
 
 		//guardar cifrado en archivo
@@ -49,7 +53,49 @@ int main(int argc, char const *argv[]){
 		}
 		printf("El texto cifrado se ha guardado en %s\n", newName);
 	}else{
+		unsigned char buffer[1024*20];
+		char c;
+		char newName[64];
+		printf("Ingrese la key 0 a 1023:\n");
+		scanf("%d", &k);
+		//Encontrar k1 y k2 i guardar en globales
+		findKn(k, 10, p10);
+		//leer archivo a cifrar y guardarlo en buffer
+		in = fopen(argv[1], "r");
+		i = 0;
+		int auxIndex = 0;
+		printf("Cargando archivo...\n");
+		while((c = fgetc(in)) != EOF){
+			if(auxIndex == 0){
+				buffer[i] = hex2dec(c) * 16;
+				auxIndex++;
+			}else if(auxIndex == 1){
+				buffer[i] += hex2dec(c);
+				auxIndex++;
+			}else if(auxIndex == 2){
+				i++;	
+				auxIndex = 0;
+			}
+		}
+		printf("Texto a descifrar cargado.\n");
+		printf("Caracteres calculados a descifrar = %d\n", i);
+		int auxSize = i;
+		printf("Descifrando con OM CBC...\n");
+		int iv;
+		printf("Ingrese IV 0 a 255\n");
+		scanf("%d", &iv);
+		operationModeDecryptCBC(buffer, auxSize, iv);
 
+		//guardar descifrado en archivo
+		strcpy(newName, argv[1]);
+		strcat(newName, ".sdes");
+		out = fopen(newName, "w");
+		i = 0;
+		while(i < auxSize){
+			fprintf(out, "%c", buffer[i]);
+			i++;
+		}
+		printf("El texto descifrado se ha guardado en %s\n", newName);
 	}
 	// int p10[10] = {3, 5, 2, 7, 4, 10, 1, 9, 8, 6};
 	// int k = 642; //1010000010
@@ -86,4 +132,14 @@ int main(int argc, char const *argv[]){
 	// 	//printf("Archivo cifrado\n");
 	// //}
 	return 0;
+}
+
+int hex2dec(char hex){
+	int d = 0;
+	if(hex >= '0' && hex <= '9'){
+		d = hex - '0';
+	}else{
+		d = hex - 'a' + 10;
+	}
+	return d;
 }

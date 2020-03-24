@@ -2,6 +2,8 @@
 int k1;
 int k2;
 void operationModeEncryptCBC(unsigned char * plaintext, unsigned char iv);
+void operationModeDecryptCBC(unsigned char * ciphertext, int length, unsigned char iv);
+
 unsigned char encodeDESSimplified(unsigned char m);
 unsigned char decodeDESSimplified(unsigned char c);
 unsigned char changeLtoR(unsigned char c);
@@ -13,3 +15,5 @@ int permutationExpansion(int n, int permutation[n], int data, int sizeData);
 int permutateDataBitLevel(int n, int permutation[n], int data);
 int getBitValue(int data, int bit);
 void printBinary(int n, int size);
+int generateRandomKey();
+int generateRandomIV();
