@@ -3,6 +3,7 @@ int k1;
 int k2;
 
 unsigned char encodeDESSimplified(unsigned char m);
+unsigned char decodeDESSimplified(unsigned char c);
 unsigned char changeLtoR(unsigned char c);
 int makeRound(unsigned char c, int round);
 void findKn(int k, int n, int permutation[n]);

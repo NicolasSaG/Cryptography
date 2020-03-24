@@ -1,6 +1,28 @@
 #include <stdio.h>
 #include "DESLibrary.h"
 
+//texto se lee, se guarda en variable, se le agrega terminador de linea y se pasa aqui
+void operationModeEncryptCBC(unsigned char * plaintext, unsigned char iv){
+	int i;
+	unsigned char c;
+	//primer bloque xor con iv
+	c = plaintext[0];
+	c = iv ^ c;
+	c = encodeDESSimplified(c);
+	plaintext[0] = c;
+	for(i = 1; plaintext[i] != '\0'; i++){
+		//cifrar y guardar c para el xor
+		c = c ^ plaintext[i];
+		c = encodeDESSimplified(c);
+		plaintext[i] = c;
+	}
+}
+
+
+// void operationModeDecryptCBC(unsigned char * ciphertext, unsigned char iv){
+
+// }
+
 unsigned char encodeDESSimplified(unsigned char m){
 	unsigned char c;
 	//aplicar a m permutaicon inicial
@@ -16,6 +38,23 @@ unsigned char encodeDESSimplified(unsigned char m){
 	int iP[8] = {4, 1, 3, 5, 7, 2, 8, 6};
 	c = permutateDataBitLevel(8, iP, c);	
 	return c;
+}
+
+unsigned char decodeDESSimplified(unsigned char c){
+	unsigned char m;
+	//aplicar a m permutaicon inicial
+	int initialPermutation[8] = {2, 6, 3, 1, 4, 8, 5, 7};
+	m = permutateDataBitLevel(8, initialPermutation, c);
+	//ronda 1
+	m = makeRound(m, 2);
+	//girar r y l de c
+	m = changeLtoR(m);
+	//ronda 2
+	m = makeRound(m, 1);
+	//aplicar a c la permutacion inversa de 
+	int iP[8] = {4, 1, 3, 5, 7, 2, 8, 6};
+	m = permutateDataBitLevel(8, iP, m);	
+	return m;
 }
 
 unsigned char changeLtoR(unsigned char c){
@@ -42,6 +81,7 @@ int makeRound(unsigned char c, int round){
   int expansionPermutation[8] = {4, 1, 2, 3, 2, 3, 4, 1};
 	rExpandida = permutationExpansion(8, expansionPermutation, r, 4);
 	//rExpandida xor k1
+
 	if(round == 1){
 		rXORk = rExpandida ^ k1;
 	}else{
@@ -153,7 +193,6 @@ int permutationExpansion(int n, int permutation[n], int data, int sizeData){
 	int i;
 	int result = 0;
 	int bitPosition, bitValue;
-	printBinary(data, 8);
 	for(i = 0; i < n; i++){
 		bitPosition = permutation[i] - 1;
 		//obtener bit

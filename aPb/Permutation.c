@@ -131,12 +131,16 @@ int main(int argc, char const *argv[]){
 		}
 
 		printf("Permutacion cargada\n| ");
+		
+		//CARCULAR INVERSA DE LA PERMUTACION 
+		printf("Calculando permutacion inversa...\n");
+		int * inversa = malloc(sizeof(int) * pSize);
+		inversa = inversePermutation(pSize, permutationArray);
 		for(j = 0; j < i; j++){
-			printf("%d | ", permutationArray[j]);
+			printf("%d | ", inversa[j]);
 		}
 		printf("\n");
-
-		//Cargar archivo a cifrar
+		//Cargar archivo a descifrar
 		in = fopen(argv[1], "r");
 		i = 0;
 		while((c = fgetc(in)) != EOF){
@@ -147,7 +151,7 @@ int main(int argc, char const *argv[]){
 		printf("Texto cargado: \n");
 		printf("%s\n", plainText);
 
-		//obtener texto cifrado con permmutacion
+		//obtener texto descifrado con permmutacion inv
 		permuteString(plainText, pSize, permutationArray);
 		printf("Texto permutado: \n");
 		printf("%s\n", plainText);
@@ -157,19 +161,8 @@ int main(int argc, char const *argv[]){
 		strcat(newName, ".per");
 		out = fopen(newName, "w");
 		fprintf(out, "%s", plainText);
-		printf("El texto cifrado se ha guardado en %s\n", newName);
+		printf("El texto descifrado se ha guardado en %s\n", newName);
 	}
-
-	// int prueba [5] = {3, 5,  2, 1, 4};
-	// int * x = malloc(sizeof(int) * 5);
-	// char h [11] = "alh omundo";
-	// //x = inversePermutation(5, prueba);
-	// //printf("_____________ inversa guardada\n");
-	// for(i = 0; i< 5; i++){
-	// 	printf("%d, ", prueba[i]);
-	// }
-	// printf("\nmensaje con prueba a cifrar con no inversa: %s\n", h);
-	// permuteString(h, 5, prueba);
 
 	
 	return 0;

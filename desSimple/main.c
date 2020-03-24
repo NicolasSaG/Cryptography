@@ -5,6 +5,20 @@
 
 int main(int argc, char const *argv[]){
 	int p10[10] = {3, 5, 2, 7, 4, 10, 1, 9, 8, 6};
+	int k, i;
+	if(argc != 3){
+		printf("Ejecuta el programa como: main archivo.txt 0|1\n");
+		printf("0: cifrar el archivo\n");
+		printf("1: descifrar el archivo\n");
+		exit(0);
+	}
+
+	if(memcmp(argv[2], "0", 1) == 0){ // cifrar con sdes
+
+	}else{
+
+	}
+	int p10[10] = {3, 5, 2, 7, 4, 10, 1, 9, 8, 6};
 	int k = 642; //1010000010
 	int i;
 	for(i = 0; i < 10; i ++)
@@ -26,7 +40,16 @@ int main(int argc, char const *argv[]){
 	unsigned char c = 189;
 	printf("Letra A: ");
 	printBinary(c, 8);
-	c = encodeDESSimplified(c);
+	//c = encodeDESSimplified(c);
+	//printf("Cifrada: \n");
+	//printBinary(c, 8);
+	c = 117;
+	printBinary(c, 8);
+	
+	
+	unsigned char m = decodeDESSimplified(c);
+	printf("Descifrada: \n");
+	printBinary(m, 8);
 		//printf("Archivo cifrado\n");
 	//}
 	return 0;
