@@ -7,12 +7,21 @@
 #define GF7	131 //10000011
 #define GF8 283 //100011011
 
+//checar error con el 4to cuadrante de las tablas
+//			]
+//			]
+// ===========
+//			} aqui
+//			}
+//multiplicaciones por ejemplo 111*111
+
 void setGFPow(int n);
 void printGF(int n);
-int multiplyGF(int a, int b, int pow);
 int getBitValue(int data, int bit);
-int GF_Global;
 
+int multiplyGF(int a, int b, int pot);
+void printBinary(int n, int size);
+int GF_Global;
 
 int main(int argc, char const *argv[]){
 	printf("Tabla de Multiplicacion de 2^3\n");
@@ -22,6 +31,8 @@ int main(int argc, char const *argv[]){
 	printGF(gfPow);
 	return 0;
 }
+
+
 
 void setGFPow(int n){
 	switch(n){
@@ -54,114 +65,70 @@ void printGF(int n){
 	int size;
 	size = pow(2, n);
 
-	printf("\t\t");
+	//printf("\t\t");
 	for(i= 0; i < size; i++){
-		printf("0x%.2x\t", i);
+		//printf("0x%.2x\t", i);
 	}
-	printf("\n");
+	//printf("\n");
 	for(i = 0; i < size; i++){
 		for(j = 0; j < size; j++){
 			if(j == 0){
-				printf("0x%.2x\t", i);
+				//printf("0x%.2x\t", i);
 			}
 			//operaciones
 			
 			//impresion de multiplicacion i*j abajo
-
-			printf("xff\t\t");
-			//printf("xff\t\t", multiplyGF(i, j));
+			//printBinary(multiplyGF(i, j, n), n);
+			//printf("\t\t");
+			multiplyGF(i, j, n);
+			printf("\n");
+			//printf("x%.2x\t\t", multiplyGF(i, j, n));
 		}
 		printf("\n");
 	}
-}
-
-
-int multiplyGF(int a, int b, int pow){
-	int result, max, i;
-
-	max = pow(2, pow) - 1;
-
-	if(getbitValue(b, pow-1) == 1){
-		result = a << 		
-	}else{
-		result = 0;
-	}
-	for(i = 1; i < pow; i++){
-		if(getbitValue(b, pow-i-1) == 1){
-			result = result ^ (a << (pow-i-1));
-		}
-	}
-
-	if(result > max){
-		result = result ^ GF_Global;
-	}
-	//for 0 to pow
-	//res = a << 2 si el bit mas sigfinicativo de b es 1
-	//res = res xor a << 1 si el segundo bit mas significativo de b es 1
-	//res = res xor a << 0 si el bit menos significativo de b es 1
-
-	//si el bit de b es 0, no hacer nada
-	//fin for
-	//si res > 255 -> mayor a 11111111
-		//hacer xor con el GF_global
-
-	//result = a << 
-	return result;
 }
 
 int getBitValue(int data, int bit){
 	int i = 1 << bit;
 	return !!(data & i);
 }
-/*
-GF(2^3)
-m(x) = x^3 + x + 1
 
-000 xor m(x) = 000+1011
+int multiplyGF(int a, int b, int pot){
+	int result, max, i;
+	max = pow(2, pot) - 1;
+	result = 0;
+	for(i = 0; i < pot; i++){
+		if(getBitValue(b, pot-i-1) == 1){
+			result = result ^ (a << (pot-i-1));
+		}
+	}
+	printBinary(result, 8);
+	//10000000 << 10000000 = 100000000000000
+	//x^7 * x^7 = x^14 = x^8*x^6 = x^pot*x^((pot*2-2)-pot)
+	//100000000000000 (15 bits) and 11111111111111 (14bits)
+	//= 00 0000 0000 0000
+	// aux = 
+	//el maximo que se podria recorrer es de pot*2 - 1
 
-000*000 = 000 
-000*001 = 0000 = 000
-...
-000*111 = 000
+	if(result > max && result < (max+1)*2-1){
+		for(i = 0; i < (pot*2-1)-pot; i++){ // recorrer los que se salgan de los n bits con un carry
+			if(getBitValue(result, pot*2-1-i) == 1){
+				//100 0000 0000 0000
+				//restamos ese bit
+				//res -= 1 << pot*2-1-i
+				//aux = 1 << pot*2-1-i
+				//
+			}
+		}
+		printf("entre\n");
+		result = result ^ GF_Global;
+	}
+	return result;
+}
 
-
-001*000 = 000 
-001*001 = 001
-001*010 = 010
-001*011 = 001*010 xor 001*001 = 010 xor 001 = 011
-001*100 = 100
-...
-001*111 = 001*100 xor 001*010 xor 001*001
-			  = 100 xor 010 xor 001 = 111
-
-010*000 = 000
-010*001 = 010
-010*010 = 100
-...
-010*100 = 1000 xor 1011 = 0011 = 011
-
-generador de GF(2^3)
-rep potencia		rep polyn	bin		hex
-0								0					000		0x0
-g^0							1						
-g^1
-g^2
-g^3
-g^4
-g^5
-g^6
-
-
-tabla de Multiplicacion
-		000	001	010	011	100	101	111
-000 000 000 000 000 000 000 000
-001
-010
-011
-100
-101
-110
-111
-
-
-*/
+void printBinary(int n, int size){
+	int i;
+	for(i=0; i< size; i++)
+		printf("%d", getBitValue(n, size-1-i));
+	//printf("\n");
+}
