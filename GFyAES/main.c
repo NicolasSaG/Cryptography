@@ -102,27 +102,94 @@ int multiplyGF(int a, int b, int pot){
 			result = result ^ (a << (pot-i-1));
 		}
 	}
-	printBinary(result, 8);
-	//10000000 << 10000000 = 100000000000000
-	//x^7 * x^7 = x^14 = x^8*x^6 = x^pot*x^((pot*2-2)-pot)
-	//100000000000000 (15 bits) and 11111111111111 (14bits)
-	//= 00 0000 0000 0000
-	// aux = 
-	//el maximo que se podria recorrer es de pot*2 - 1
+	//printBinary(result, 8);
 
-	if(result > max && result < (max+1)*2-1){
-		for(i = 0; i < (pot*2-1)-pot; i++){ // recorrer los que se salgan de los n bits con un carry
-			if(getBitValue(result, pot*2-1-i) == 1){
-				//100 0000 0000 0000
-				//restamos ese bit
-				//res -= 1 << pot*2-1-i
-				//aux = 1 << pot*2-1-i
-				//
-			}
+	int carryIndex;
+	carryIndex = pot * 2 - 2;
+	//11111 *10000 = 111110000
+	printf("Valor: ");
+	printBinary(result, pot*2-1);
+	printf("\n");
+	while(result > max){
+		if(carryIndex == pot - 1)
+			break;
+		
+		if(getBitValue(result, carryIndex) == 1){ // hay carry
+			int aux, corrAux;
+			//printf("carruy Index= %d\n", carryIndex);
+			aux = 1 << carryIndex;
+			printf("\nEncontrado carry en %d:", carryIndex);
+			printBinary(aux, pot*2-1);
+			printf("\n");
+			// obtener bit carry
+			//obtener corrimiento x^5 = x^3*x^2 (obtener el 2)
+			corrAux = carryIndex - pot;
+			aux = 1 << carryIndex - corrAux;
+			printf("Es lo mismo que ");
+			printBinary(aux, pot*2-1);
+			printf(" * ");
+			printBinary(1<<corrAux, pot*2-1);
+			printf("\n");
+			//aux es lo mismo que (1 << pot ) *(1<< corrAux)
+			//printf("carruy Index= %d\n", carryIndex);
+			//printf("%d\n", carryIndex-pot); 
+			//printBinary(aux, pot*2);
+			printf("A ");
+			printBinary(aux, pot*2-1);
+			printf(" xor ");
+			printBinary(GF_Global, pot*2-1);
+			printf("\n");
+			aux = aux ^ GF_Global; //hacerle modulo con el 
+			printf("= ");
+			printBinary(aux, pot*2-1);
+			printf("\n");
+			//aux multiplicarlo por por
+			aux = aux << corrAux;
+			printf("Multiplicamos aux por la otra potencia:\naux = ");
+			
+			printBinary(aux, pot*2-1);
+			printf("\n");
+			//result = result ^
+			//printf("despues de xor irreducible: "); 
+			//printBinary(aux, pot*2);
+			//restarle a result 1 << carryIndex y luego xor con aux
+
+			printf("A result se le resta el bit que es carry: ");
+			printBinary(result, pot*2-1);
+			printf(" - ");
+			
+			int resto;
+			resto = 1 << carryIndex;
+			printBinary(resto, pot*2-1);
+			printf(" = ");
+			result = result ^ resto;
+			printBinary(result, pot*2-1);
+			printf("\nresult se hace xor con aux");
+			printf("\naux   = ");
+			printBinary(aux, pot*2-1);
+			printf("\nresult= ");
+			printBinary(result, pot*2-1);
+			printf("\n");
+			result = result ^ aux;
+			printBinary(result, 2*pot-1);
+			printf("\n");
+			carryIndex--;
+		}else{
+			carryIndex--;
 		}
-		printf("entre\n");
-		result = result ^ GF_Global;
 	}
+	printf("\n");
+	// if(result > max){ // hay al menos un carry
+	// 	//maximo posible carry esta en 2*pot-2
+
+	// 	printf("Hay al menos un carry carry\n");
+	// 	printBinary(result, 5);
+	// 	printf(" xor ");
+	// 	printBinary(GF_Global, 5);
+	// 	result = result ^ GF_Global;
+	// 	printf(" = ");
+	// 	printBinary(result,5);
+	// }
 	return result;
 }
 
