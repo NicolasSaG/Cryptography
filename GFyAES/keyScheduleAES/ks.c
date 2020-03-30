@@ -1,41 +1,159 @@
 #include "stdio.h"
 #include "stdlib.h"
-unsigned int * makeRound(unsigned int * key, int round);
+unsigned int * makeRound(unsigned int * key, int round, int type);
 unsigned int getRoundConstant(int round);
 unsigned int columnShift(unsigned int column);
 unsigned int findInSBox(unsigned int column);
-
 int getHex(unsigned int data, int hex);
+
+void printHexFile(unsigned int * data, int size, FILE * f);
 void printHex(unsigned int * data, int size);
+int hex2dec(char hex);
+
+//gcc ks.c -o ks
+//ks key.txt 128|192
+//resultado: generar archivo subkeys.txt con las 10 o 12 subllaves
 
 int main(int argc, char const *argv[]){
-	unsigned int * a = malloc(sizeof(unsigned int) * 4);
-	a[0] = 0xa0000000;
-	a[1] = 0x00000000;
-	a[2] = 0x00000000;
-	a[3] = 0x0000b000;
-	a = makeRound(a, 0);
+	FILE * keyFile, * subkeys; 
+	unsigned int * key;
+	unsigned int hexValue;
+	char c;
+	int i, auxIndex;
+
+	if(argc != 3){
+		printf("Ejecuta el programa como: ks key.txt 128|192\n");
+		printf("128: generar subllaves a una llave de 128 bits\n");
+		printf("192: generar subllaves a una llave de 192 bits\n");
+		exit(0);
+	}
+
+	keyFile = fopen(argv[1], "r");
+	subkeys = fopen("subkeys.txt", "w");
+
+	if(memcmp(argv[2], "128", 3) == 0){
+		key = malloc(sizeof(unsigned int) * 4);
+		printf("Cargando llave...\n");
+		//leer llave y guardarla
+
+		auxIndex = 0;
+		i = 0;
+		while((c = fgetc(keyFile)) != EOF){
+				if(auxIndex == 0){
+					hexValue = hex2dec(c) << 28;
+					key[i] = hexValue;
+					auxIndex++;
+				}else if(auxIndex == 1){
+					hexValue = hex2dec(c) << 24;
+					key[i] += hexValue;
+					auxIndex++;
+				}else if(auxIndex == 2){
+					hexValue = hex2dec(c) << 20;
+					key[i] += hexValue;
+					auxIndex++;
+				}else if(auxIndex == 3){
+					hexValue = hex2dec(c) << 16;
+					key[i] += hexValue;
+					auxIndex++;
+				}else if(auxIndex == 4){
+					hexValue = hex2dec(c) << 12;
+					key[i] += hexValue;
+					auxIndex++;
+				}else if(auxIndex == 5){
+					hexValue = hex2dec(c) << 8;
+					key[i] += hexValue;
+					auxIndex++;
+				}else if(auxIndex == 6){
+					hexValue = hex2dec(c) << 4;
+					key[i] += hexValue;
+					auxIndex++;
+				}else if(auxIndex == 7){
+					hexValue = hex2dec(c) << 0;
+					key[i] += hexValue;
+					auxIndex++;
+				}else if(auxIndex == 8){
+					i++;
+					auxIndex = 0;
+				}
+		}
+		printf("Key cargada: ");
+		printHex(key, 4);
+		for(i = 0; i < 10; i++){
+			key = makeRound(key, i, 3);
+			printHexFile(key, 4, subkeys);
+		}
+	}else{
+		key = malloc(sizeof(unsigned int) * 6);
+		//leer llave
+		auxIndex = 0;
+		i = 0;
+		while((c = fgetc(keyFile)) != EOF){
+				if(auxIndex == 0){
+					hexValue = hex2dec(c) << 28;
+					key[i] = hexValue;
+					auxIndex++;
+				}else if(auxIndex == 1){
+					hexValue = hex2dec(c) << 24;
+					key[i] += hexValue;
+					auxIndex++;
+				}else if(auxIndex == 2){
+					hexValue = hex2dec(c) << 20;
+					key[i] += hexValue;
+					auxIndex++;
+				}else if(auxIndex == 3){
+					hexValue = hex2dec(c) << 16;
+					key[i] += hexValue;
+					auxIndex++;
+				}else if(auxIndex == 4){
+					hexValue = hex2dec(c) << 12;
+					key[i] += hexValue;
+					auxIndex++;
+				}else if(auxIndex == 5){
+					hexValue = hex2dec(c) << 8;
+					key[i] += hexValue;
+					auxIndex++;
+				}else if(auxIndex == 6){
+					hexValue = hex2dec(c) << 4;
+					key[i] += hexValue;
+					auxIndex++;
+				}else if(auxIndex == 7){
+					hexValue = hex2dec(c) << 0;
+					key[i] += hexValue;
+					auxIndex++;
+				}else if(auxIndex == 8){
+					i++;
+					auxIndex = 0;
+				}
+		}
+		printf("Key cargada: ");
+		printHex(key, 6);
+		for(i = 0; i < 12; i++){
+			key = makeRound(key, i, 5);
+			printHexFile(key, 4, subkeys);
+		}
+	}
 	return 0;
 }
 
-unsigned int * makeRound(unsigned int * key, int round){
+unsigned int * makeRound(unsigned int * key, int round, int type){
 	unsigned int sBoxColumn;
-	unsigned int k;
+	unsigned int i, k;
 	
 	//obtener constante de ronda
 	k = getRoundConstant(round);
-
 	//corrimiento de ultima columna
-	key[3] = columnShift(key[3]);
-
-	printf("0x%.8x\n", sBoxColumn);
+	key[type] = columnShift(key[type]);
 	//buscar en la SBox la ultima columna corrida
-	sBoxColumn = findInSBox(key[3]);
-
-	printf("0x%.8x\n", sBoxColumn);
+	sBoxColumn = findInSBox(key[type]);
 	//xor con la K de ronda
 	sBoxColumn = sBoxColumn ^ k;
-	printf("0x%.8x\n", sBoxColumn);
+	//tomar primer columna de key y xor con columna de sBox
+	key[0] = key[0] ^ sBoxColumn;
+	//operar las otras columnas con el resultado anterior
+
+	for(i = 0; i < type; i++){
+		key[i+1] = key[i] ^ key[i+1];
+	}
 	return key;
 }
 
@@ -72,8 +190,14 @@ unsigned int getRoundConstant(int round){
 		case 9:
 			k = 0x36000000;
 		break;
+		case 10:
+			k = 0x6c000000;
+		break;
+		case 11:
+			k = 0xd8000000;
+		break;
 		default: 
-			k= 0;
+			k = 0;
 		break;
 	}
 	return k;
@@ -101,7 +225,7 @@ unsigned int findInSBox(unsigned int column){
 	for(i = 0; i < 4; i++){
 		//obtener indices
 		x = getHex(column, 7 - i*2); 
-		y = getHex(column, 7 - i*2+1);
+		y = getHex(column, 7 - (i*2+1));
 		auxValue = multiplicativeInverse[x][y];
 		auxValue = auxValue << (3-i)*8;
 		columnSBox += auxValue;
@@ -119,10 +243,28 @@ int getHex(unsigned int data, int hex){
 	return result;
 }
 
+void printHexFile(unsigned int * data, int size, FILE * f){
+	int i;
+	for(i = 0; i < size; i++){
+		fprintf(f, "%.8x ", data[i]);
+	}
+	fprintf(f, "\n");
+}
+
 void printHex(unsigned int * data, int size){
 	int i;
 	for(i = 0; i < size; i++){
 		printf("%.8x ", data[i]);
 	}
 	printf("\n");
+}
+
+int hex2dec(char hex){
+	int d = 0;
+	if(hex >= '0' && hex <= '9'){
+		d = hex - '0';
+	}else{
+		d = hex - 'a' + 10;
+	}
+	return d;
 }
