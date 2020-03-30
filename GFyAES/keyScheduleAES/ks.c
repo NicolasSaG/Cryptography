@@ -142,9 +142,9 @@ unsigned int * makeRound(unsigned int * key, int round, int type){
 	//obtener constante de ronda
 	k = getRoundConstant(round);
 	//corrimiento de ultima columna
-	key[type] = columnShift(key[type]);
+	sBoxColumn = columnShift(key[type]);
 	//buscar en la SBox la ultima columna corrida
-	sBoxColumn = findInSBox(key[type]);
+	sBoxColumn = findInSBox(sBoxColumn);
 	//xor con la K de ronda
 	sBoxColumn = sBoxColumn ^ k;
 	//tomar primer columna de key y xor con columna de sBox
