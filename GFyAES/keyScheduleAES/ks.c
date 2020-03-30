@@ -1,6 +1,6 @@
 #include "stdio.h"
 #include "stdlib.h"
-unsigned int * makeRound(unsigned int * key, int round, int type);
+void makeRound(unsigned int * key, int round, int type);
 unsigned int getRoundConstant(int round);
 unsigned int columnShift(unsigned int column);
 unsigned int findInSBox(unsigned int column);
@@ -79,7 +79,7 @@ int main(int argc, char const *argv[]){
 		printf("Key cargada: ");
 		printHex(key, 4);
 		for(i = 0; i < 10; i++){
-			key = makeRound(key, i, 3);
+			makeRound(key, i, 3);
 			printHexFile(key, 4, subkeys);
 		}
 	}else{
@@ -128,21 +128,22 @@ int main(int argc, char const *argv[]){
 		printf("Key cargada: ");
 		printHex(key, 6);
 		for(i = 0; i < 12; i++){
-			key = makeRound(key, i, 5);
+			makeRound(key, i, 5);
 			printHexFile(key, 4, subkeys);
 		}
 	}
 	return 0;
 }
 
-unsigned int * makeRound(unsigned int * key, int round, int type){
+void makeRound(unsigned int * key, int round, int type){
 	unsigned int sBoxColumn;
 	unsigned int i, k;
-	
 	//obtener constante de ronda
 	k = getRoundConstant(round);
+
 	//corrimiento de ultima columna
 	sBoxColumn = columnShift(key[type]);
+	
 	//buscar en la SBox la ultima columna corrida
 	sBoxColumn = findInSBox(sBoxColumn);
 	//xor con la K de ronda
@@ -154,7 +155,6 @@ unsigned int * makeRound(unsigned int * key, int round, int type){
 	for(i = 0; i < type; i++){
 		key[i+1] = key[i] ^ key[i+1];
 	}
-	return key;
 }
 
 unsigned int getRoundConstant(int round){
@@ -224,7 +224,7 @@ unsigned int findInSBox(unsigned int column){
 	columnSBox = 0;
 	for(i = 0; i < 4; i++){
 		//obtener indices
-		x = getHex(column, 7 - i*2); 
+		x = getHex(column, 7 - (i*2)); 
 		y = getHex(column, 7 - (i*2+1));
 		auxValue = multiplicativeInverse[x][y];
 		auxValue = auxValue << (3-i)*8;
@@ -235,12 +235,12 @@ unsigned int findInSBox(unsigned int column){
 
 //obtener el n-esimo hex de un dato
 int getHex(unsigned int data, int hex){
-	int result;
+	unsigned int result;
 	int aux = 15 << hex * 4;
 	
 	result = data & aux;
-	result = result >> hex*4;
-	return result;
+	result = result >> hex * 4;
+	return (int) result;
 }
 
 void printHexFile(unsigned int * data, int size, FILE * f){
