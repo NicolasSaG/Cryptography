@@ -127,10 +127,23 @@ int main(int argc, char const *argv[]){
 		}
 		printf("Key cargada: ");
 		printHex(key, 6);
-		for(i = 0; i < 12; i++){
+		unsigned int * subkeysArray = malloc(sizeof(unsigned int)* 48);
+		for(i = 0; i < 8; i++){
 			makeRound(key, i, 5);
-			printHexFile(key, 4, subkeys);
+			subkeysArray[i*6] = key[0];
+			subkeysArray[i*6+1] = key[1];
+			subkeysArray[i*6+2] = key[2];
+			subkeysArray[i*6+3] = key[3];
+			subkeysArray[i*6+4] = key[4];
+			subkeysArray[i*6+5] = key[5];
+
+			//printHexFile(key, 4, subkeys);
 		}
+		for(i = 0; i < 48; i+=4){
+			printHexFile(subkeysArray+i, 4, subkeys);
+		}
+		printf("auxiliar\n");
+		printHex(subkeysArray, 48);
 	}
 	return 0;
 }
