@@ -132,7 +132,7 @@ int multiplyGF(int a, int b, int pot){
 			aux = 1 << carryIndex;
 			corrAux = carryIndex - pot;
 			aux = 1 << carryIndex - corrAux;
-
+			
 			aux = aux ^ GF_Global; //hacerle modulo con el irreducible al carry
 			aux = aux << corrAux;
 			int resto;
