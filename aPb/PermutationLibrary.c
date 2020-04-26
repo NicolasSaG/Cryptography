@@ -15,8 +15,6 @@ int * inversePermutation(int n, int  permutation[n]){
 		inverseAux[i][0] = i;
 		inverseAux[i][1] = permutation[i];
 	}
-	// 0 1 2 3
-	// 2 0 3 1
 	//ordenar los de arriba respecto a la fila de abajo
 	printPermutation(n, inverseAux);
 	mergeBidimentionalSort(n, inverseAux, 0, n-1);
