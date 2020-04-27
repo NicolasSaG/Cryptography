@@ -1,7 +1,20 @@
 #include <stdio.h>
+
+//random bytes
 #include <openssl/rand.h>
+//bignum
+#include <openssl/bn.h>
+
+
+//secret key
 #include <openssl/rsa.h>
 #include <openssl/pem.h>
+
+
+//stream ciphers
+#include <openssl/evp.h>
+
+
 
 //compile: gcc prueba.c -lssl -lcrypto -o prueba
 
@@ -44,5 +57,14 @@ int main(int argc, char const *argv[]){
 	BIO_free_all(bio);
 	RSA_free(rsa);
 	free(pem_key);
+
+	char nu [17];
+	BIGNUM * b = BN_new(void);
+	int a = BN_rand(b, 128, 0, 0);
+	BN_bn2dec(nu, b);
+	printf("Random number: %s\n", nu);	
+	
+	BN_free(b);
+
 	return 0;
 }
