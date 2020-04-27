@@ -19,6 +19,18 @@
 
 //compile: gcc prueba.c -lssl -lcrypto -o prueba
 
+
+int generateCSPR();
+
+char * genetareKey(int bytes);
+void encryptRC4(char * filenameIn, char * filenameOut);
+void decryptRC4(char * filenameIn, char * filenameOut);
+
+
+
+int hex2dec(char hex);
+
+
 int main(int argc, char const *argv[]){
 	unsigned char buffer[128] = "";
 	int n = 128;
@@ -301,4 +313,39 @@ void decryptRC4(char * filenameIn, char * filenameOut){
   free(ciphertext);
   fclose(in);  
   fclose(out);	
+}
+
+int hex2dec(char hex){
+	int d = 0;
+	if(hex >= '0' && hex <= '9'){
+		d = hex - '0';
+	}else{
+		d = hex - 'a' + 10;
+	}
+	return d;
+}
+
+int generateCSPR(){
+	int result = 0;
+	char  * num = malloc(sizeof(char) * 3);
+	//inicializar
+	BIGNUM * b = BN_new();
+	//generar random de 24 bits
+	int a = BN_rand(b, 24, 0, 0);
+	//convertir BIGNUM a string y guardarla en un puntero
+	num = BN_bn2dec(b);
+
+	for(int j = 0; j < 3; j++){
+		printf("%c", num[j]);
+		result = result * 10 + num[j] - '0';
+	}
+	//liberar memoria de BIGNUM
+	BN_free(b);
+	return result;
+}
+
+char * genetareKey(int bytes){
+	unsigned char * key = malloc(sizeof(unsigned char) * bytes);
+	int r = RAND_bytes(key, bytes);
+	return key;
 }
