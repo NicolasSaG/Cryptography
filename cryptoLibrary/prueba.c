@@ -34,6 +34,7 @@ void decryptAES192(char * filenameIn, char * filenameOut);
 
 int hex2dec(char hex);
 
+int do_crypt(FILE *in, FILE *out, int do_encrypt);
 
 int main(int argc, char const *argv[]){
 	//crypto pseudo random
@@ -53,16 +54,24 @@ int main(int argc, char const *argv[]){
 	//encrypt
 	encryptRC4("texto1.txt", "texto1.rc4");
 	//decrypt
-	decryptRC4("texto1.rc4", "texto1DescifradoRC4.txt");
+	decryptRC4("texto1.rc4", "texto1RC4.txt");
 	
 	//BLOCK CIPHERS
 	//3DES 
-	encrypt3DES("texto1.txt", "texto1.3des");
-	decrypt3DES("texto1.3des", "texto1descifrado3DES.txt");
+	FILE * a = fopen("texto1.txt", "rb");
+	FILE * b = fopen("texto1.3des", "wb");
+	do_crypt(a, b, 0);
+
+	FILE * c = fopen("texto1.3des", "rb");
+	FILE * d = fopen("texto13des.txt", "wb");
+	do_crypt(c, d, 1);
+
+	//encrypt3DES("texto1.txt", "texto1.3des");
+	//decrypt3DES("texto1.3des", "texto13DES.txt");
 
 	//AES192
-	encrypt3DES("texto1.txt", "texto1.aes");
-	decrypt3DES("texto1.aes", "texto1descifradoAES.txt");
+	//encrypt3DES("texto1.txt", "texto1.aes");
+	//decrypt3DES("texto1.aes", "texto1descifradoAES.txt");
 
 	return 0;
 }
@@ -251,6 +260,7 @@ void encrypt3DES(char * filenameIn, char * filenameOut){
 	ciphertext = malloc(sizeof(unsigned char)* inputSize);
 
 	ctx = EVP_CIPHER_CTX_new();
+	
 	EVP_EncryptInit_ex(ctx, EVP_des_ede3(), NULL, key, NULL);
 
 	if (!EVP_EncryptUpdate(ctx, ciphertext, &ciphertextLength, plaintext, strlen(plaintext))) {
@@ -330,19 +340,24 @@ void decrypt3DES(char * filenameIn, char * filenameOut){
 	plaintext = malloc((sizeof(char) * inputSize) + 1);
 
 	ctx = EVP_CIPHER_CTX_new();
-	EVP_DecryptInit_ex(ctx, EVP_rc4(), NULL, key, NULL);
+	EVP_CipherInit_ex(ctx, EVP_des_ede3(), NULL, key, NULL, 1);
 
-	if (!EVP_DecryptUpdate(ctx, plaintext, &plaintextLength, ciphertext, strlen(ciphertext))) {
+	
+	if (!EVP_CipherUpdate(ctx, plaintext, &plaintextLength, ciphertext, strlen(ciphertext))) {
     	/* Error */
     	EVP_CIPHER_CTX_free(ctx);
+    	printf("error 1\n");
     	exit(-1);
   	}
 
-  	if (!EVP_DecryptFinal_ex(ctx, plaintext + plaintextLength, &tmpLength)) {
+
+  	if (!EVP_CipherFinal_ex(ctx, plaintext + plaintextLength, &tmpLength)) {
     	/* Error */
     	EVP_CIPHER_CTX_free(ctx);
+    	printf("error 2\n");
     	exit(-1);
   	}
+
 
   	plaintextLength += tmpLength;
   	EVP_CIPHER_CTX_free(ctx);
@@ -476,7 +491,7 @@ void decryptAES192(char * filenameIn, char * filenameOut){
 	plaintext = malloc((sizeof(char) * inputSize) + 1);
 
 	ctx = EVP_CIPHER_CTX_new();
-	EVP_DecryptInit_ex(ctx, EVP_rc4(), NULL, key, NULL);
+	EVP_DecryptInit_ex(ctx, EVP_aes_192_ecb(), NULL, key, NULL);
 
 	if (!EVP_DecryptUpdate(ctx, plaintext, &plaintextLength, ciphertext, strlen(ciphertext))) {
     	/* Error */
@@ -544,3 +559,43 @@ unsigned char * genetareKey(int bytes){
 	int r = RAND_bytes(key, bytes);
 	return key;
 }
+
+int do_crypt(FILE *in, FILE *out, int do_encrypt)
+ {
+     /* Allow enough space in output buffer for additional block */
+     unsigned char inbuf[1024], outbuf[1024 + EVP_MAX_BLOCK_LENGTH];
+     int inlen, outlen;
+     EVP_CIPHER_CTX *ctx;
+     /*
+      * Bogus key and IV: we'd normally set these from
+      * another source.
+      */
+     unsigned char key[16] = {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0};
+
+     /* Don't set key or IV right away; we want to check lengths */
+     ctx = EVP_CIPHER_CTX_new();
+
+     /* Now we can set key and IV */
+     EVP_CipherInit_ex(ctx, EVP_des_ede3(), NULL, key, NULL, do_encrypt);
+
+     for (;;) {
+         inlen = fread(inbuf, 1, 1024, in);
+         if (inlen <= 0)
+             break;
+         if (!EVP_CipherUpdate(ctx, outbuf, &outlen, inbuf, inlen)) {
+             /* Error */
+             EVP_CIPHER_CTX_free(ctx);
+             return 0;
+         }
+         fwrite(outbuf, 1, outlen, out);
+     }
+     if (!EVP_CipherFinal_ex(ctx, outbuf, &outlen)) {
+         /* Error */
+         EVP_CIPHER_CTX_free(ctx);
+         return 0;
+     }
+     fwrite(outbuf, 1, outlen, out);
+
+     EVP_CIPHER_CTX_free(ctx);
+     return 1;
+ }
