@@ -27,6 +27,10 @@ void encryptRC4(char * filenameIn, char * filenameOut);
 void decryptRC4(char * filenameIn, char * filenameOut);
 
 void encrypt3DES(char * filenameIn, char * filenameOut);
+void decrypt3DES(char * filenameIn, char * filenameOut);
+
+void encryptAES192(char * filenameIn, char * filenameOut);
+void decryptAES192(char * filenameIn, char * filenameOut);
 
 int hex2dec(char hex);
 
@@ -45,15 +49,20 @@ int main(int argc, char const *argv[]){
 	}
 	printf("\n");
 
-	//stream cipher
+	//STREAM CIPHERS
 	//encrypt
 	encryptRC4("texto1.txt", "texto1.rc4");
 	//decrypt
-	decryptRC4("texto1.rc4", "texto1Descifrado.txt");
+	decryptRC4("texto1.rc4", "texto1DescifradoRC4.txt");
 	
-	//3des encrypt
+	//BLOCK CIPHERS
+	//3DES 
 	encrypt3DES("texto1.txt", "texto1.3des");
+	decrypt3DES("texto1.3des", "texto1descifrado3DES.txt");
 
+	//AES192
+	encrypt3DES("texto1.txt", "texto1.aes");
+	decrypt3DES("texto1.aes", "texto1descifradoAES.txt");
 
 	return 0;
 }
@@ -254,23 +263,250 @@ void encrypt3DES(char * filenameIn, char * filenameOut){
 	    exit(-1);
 	}
 
-  	ciphertextLength += tmpLength;
+	ciphertextLength += tmpLength;
+	EVP_CIPHER_CTX_free(ctx);
+
+	out = fopen(filenameOut, "wb");
+
+	if (out == NULL) {
+  	printf("encrypt3DES(): Error al abrir el archivo donde se guarda el cifrado\n");
+	exit(-1);
+	}
+	for(i = 0; i < ciphertextLength; i++){
+		fprintf(out, "%.2x ", ciphertext[i]);	
+	}
+
+	free(plaintext);
+	free(ciphertext);
+	fclose(in);  
+  fclose(out);
+}
+
+void decrypt3DES(char * filenameIn, char * filenameOut){
+	FILE * in, * out;
+	EVP_CIPHER_CTX *ctx;
+	char * plaintext,  c;
+	unsigned char * ciphertext;
+	long i, inputSize;
+	int plaintextLength, tmpLength;
+
+	unsigned char key[21] = {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0};
+
+	in = fopen(filenameIn, "r");
+	
+	if(in == NULL){
+		printf("decrypt3DES(): Error al abrir el archivo a descifrar\n");
+		exit(-1);
+	}
+
+	inputSize = 0;
+	while((c = fgetc(in)) != EOF){
+		if(c == ' '){
+			inputSize++;	
+		}
+	}
+
+	rewind(in);
+	ciphertext = malloc(sizeof(unsigned char)* inputSize);
+	
+	unsigned char aux;
+	int auxIndex = 0;
+	i = 0;
+	while((c = fgetc(in)) != EOF){
+		if(auxIndex == 0){
+			aux = hex2dec(c) << 4;
+			ciphertext[i] = aux;
+			auxIndex++;
+		}else if(auxIndex == 1){
+			aux = hex2dec(c);
+			ciphertext[i] += aux;
+			auxIndex++;
+		}else{
+			i++;
+			auxIndex = 0;
+		}
+	}	
+
+	plaintext = malloc((sizeof(char) * inputSize) + 1);
+
+	ctx = EVP_CIPHER_CTX_new();
+	EVP_DecryptInit_ex(ctx, EVP_rc4(), NULL, key, NULL);
+
+	if (!EVP_DecryptUpdate(ctx, plaintext, &plaintextLength, ciphertext, strlen(ciphertext))) {
+    	/* Error */
+    	EVP_CIPHER_CTX_free(ctx);
+    	exit(-1);
+  	}
+
+  	if (!EVP_DecryptFinal_ex(ctx, plaintext + plaintextLength, &tmpLength)) {
+    	/* Error */
+    	EVP_CIPHER_CTX_free(ctx);
+    	exit(-1);
+  	}
+
+  	plaintextLength += tmpLength;
   	EVP_CIPHER_CTX_free(ctx);
 
   	out = fopen(filenameOut, "wb");
   
   	if (out == NULL) {
-    	printf("encrypt3DES(): Error al abrir el archivo donde se guarda el cifrado\n");
+    	printf("decrypt3DES(): Error al abrir el archivo donde se guarda el descifrado\n");
 		exit(-1);
   	}
-  	for(i = 0; i < ciphertextLength; i++){
-  		fprintf(out, "%.2x ", ciphertext[i]);	
+  	for(i = 0; i < plaintextLength; i++){
+  		fprintf(out, "%c", plaintext[i]);	
   	}
   
   	free(plaintext);
   	free(ciphertext);
   	fclose(in);  
-  	fclose(out);
+  	fclose(out);	
+}
+
+void encryptAES192(char * filenameIn, char * filenameOut){
+	FILE * in, * out;
+	EVP_CIPHER_CTX *ctx;
+	char * plaintext,  c;
+	unsigned char * ciphertext;
+	long i, inputSize;
+	int ciphertextLength, tmpLength;
+
+	unsigned char key[24] = {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0};
+
+	in = fopen(filenameIn, "r");
+	
+	if(in == NULL){
+		printf("encryptAES192(): Error al abrir el archivo a cifrar\n");
+		exit(-1);
+	}
+
+	inputSize = 0;
+	while((c = fgetc(in)) != EOF){
+		inputSize++;
+	}
+
+	rewind(in);
+	plaintext = malloc(sizeof(char)* inputSize);
+	i = 0;
+	//cargar archivo a cifrar
+	while((c = fgetc(in)) != EOF){
+		plaintext[i] = c;
+		i++;
+	}	
+
+	ciphertext = malloc(sizeof(unsigned char)* inputSize);
+
+	ctx = EVP_CIPHER_CTX_new();
+	EVP_EncryptInit_ex(ctx, EVP_aes_192_ecb(), NULL, key, NULL);
+
+	if (!EVP_EncryptUpdate(ctx, ciphertext, &ciphertextLength, plaintext, strlen(plaintext))) {
+	    /* Error */
+	    EVP_CIPHER_CTX_free(ctx);
+	}
+	if (!EVP_EncryptFinal_ex(ctx, ciphertext + ciphertextLength, &tmpLength)) {
+	    /* Error */
+	    EVP_CIPHER_CTX_free(ctx);
+	    exit(-1);
+	}
+
+	ciphertextLength += tmpLength;
+	EVP_CIPHER_CTX_free(ctx);
+
+	out = fopen(filenameOut, "wb");
+
+	if (out == NULL) {
+  	printf("encryptAES192(): Error al abrir el archivo donde se guarda el cifrado\n");
+	exit(-1);
+	}
+	for(i = 0; i < ciphertextLength; i++){
+		fprintf(out, "%.2x ", ciphertext[i]);	
+	}
+
+	free(plaintext);
+	free(ciphertext);
+	fclose(in);  
+  fclose(out);
+}
+
+void decryptAES192(char * filenameIn, char * filenameOut){
+	FILE * in, * out;
+	EVP_CIPHER_CTX *ctx;
+	char * plaintext,  c;
+	unsigned char * ciphertext;
+	long i, inputSize;
+	int plaintextLength, tmpLength;
+
+	unsigned char key[24] = {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0};
+
+	in = fopen(filenameIn, "r");
+	
+	if(in == NULL){
+		printf("decryptAES192(): Error al abrir el archivo a descifrar\n");
+		exit(-1);
+	}
+
+	inputSize = 0;
+	while((c = fgetc(in)) != EOF){
+		if(c == ' '){
+			inputSize++;	
+		}
+	}
+
+	rewind(in);
+	ciphertext = malloc(sizeof(unsigned char)* inputSize);
+	
+	unsigned char aux;
+	int auxIndex = 0;
+	i = 0;
+	while((c = fgetc(in)) != EOF){
+		if(auxIndex == 0){
+			aux = hex2dec(c) << 4;
+			ciphertext[i] = aux;
+			auxIndex++;
+		}else if(auxIndex == 1){
+			aux = hex2dec(c);
+			ciphertext[i] += aux;
+			auxIndex++;
+		}else{
+			i++;
+			auxIndex = 0;
+		}
+	}	
+
+	plaintext = malloc((sizeof(char) * inputSize) + 1);
+
+	ctx = EVP_CIPHER_CTX_new();
+	EVP_DecryptInit_ex(ctx, EVP_rc4(), NULL, key, NULL);
+
+	if (!EVP_DecryptUpdate(ctx, plaintext, &plaintextLength, ciphertext, strlen(ciphertext))) {
+    	/* Error */
+    	EVP_CIPHER_CTX_free(ctx);
+    	exit(-1);
+  	}
+
+  	if (!EVP_DecryptFinal_ex(ctx, plaintext + plaintextLength, &tmpLength)) {
+    	/* Error */
+    	EVP_CIPHER_CTX_free(ctx);
+    	exit(-1);
+  	}
+
+  	plaintextLength += tmpLength;
+  	EVP_CIPHER_CTX_free(ctx);
+
+  	out = fopen(filenameOut, "wb");
+  
+  	if (out == NULL) {
+    	printf("decryptAES192(): Error al abrir el archivo donde se guarda el descifrado\n");
+		exit(-1);
+  	}
+  	for(i = 0; i < plaintextLength; i++){
+  		fprintf(out, "%c", plaintext[i]);	
+  	}
+  
+  	free(plaintext);
+  	free(ciphertext);
+  	fclose(in);  
+  	fclose(out);	
 }
 
 int hex2dec(char hex){
@@ -300,6 +536,7 @@ int generateCSPR(){
 	BN_free(b);
 	return result;
 }
+
 
 
 unsigned char * genetareKey(int bytes){
