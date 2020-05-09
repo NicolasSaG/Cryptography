@@ -552,8 +552,6 @@ int generateCSPR(){
 	return result;
 }
 
-
-
 unsigned char * genetareKey(int bytes){
 	unsigned char * key = malloc(sizeof(unsigned char) * bytes);
 	int r = RAND_bytes(key, bytes);
