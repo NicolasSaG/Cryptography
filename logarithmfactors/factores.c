@@ -4,7 +4,8 @@
 #include "TADPilaDin.h"
 
 #include <openssl/bn.h>
-pila * factorizar(BIGNUM * n){
+#include <openssl/bio.h>
+/*pila * factorizar(BIGNUM * n){
 	pila * stack;
 	elemento e;
 	char numString1[2] = "1";
@@ -17,7 +18,6 @@ pila * factorizar(BIGNUM * n){
 	BIGNUM * two = BN_new();
 	BN_dec2bn(two, numString);
 
-	double i;
 	stack = malloc(sizeof(pila));
 	Initialize(stack);
 
@@ -29,7 +29,7 @@ pila * factorizar(BIGNUM * n){
 		if(BN_is_zero(n)){
 			BIGNUM * b = BN_new();
 			BN_dec2bn(b, numString);
-			e->b = b;
+			e.b = b;
 			Push(stack, e);
 			BN_div(n, NULL, n, two, BN_CTX_new());
 		}else{
@@ -52,7 +52,7 @@ pila * factorizar(BIGNUM * n){
 			BN_nnmod(n, n, i, BN_CTX_new());
 			if(BN_is_zero(n)){
 				//BIGNUM * b = BN_new();
-				e->b = i;
+				e.b = i;
 				Push(stack, e);
 				BN_div(n, NULL, n, i, BN_CTX_new());
 			}else{
@@ -64,32 +64,65 @@ pila * factorizar(BIGNUM * n){
 	}
 
 	if(BN_cmp(n, one)){
-		e->b = n;
+		e.b = n;
 		Push(stack, e);
 	}
 	return stack;
+}*/
+
+//gcc factores.c TADPilaDin.c  -lssl -lcrypto -o factores
+
+
+//imprimir en decimal un bignum
+void printBN(BIGNUM * b){
+	char * s;
+	s = BN_bn2dec(b);
+	printf("%s", s);
 }
+
+BIGNUM * str2bn(char * s){
+	BIGNUM * b;
+	b = BN_new();
+	BN_dec2bn(&b, s);
+	return b;
+}
+
 
 int main(int argc, char const *argv[]){
 	pila * p;
-	char num [19] = "250000009000000081";
-	BIGNUM * b = BN_new();
-	BN_dec2bn(b, num);
-	p = factorizar(b);
+	char num [22] = "100160063";
+	BIO *out;
+	out = BIO_new_fp(stdout, BIO_NOCLOSE);
+	BIGNUM * b = str2bn(num);
+	
+	//convertir bignum a cadena
+
+	printBN(b);
+	printf("\n");
+	while(1){
+		BN_mod_exp();		
+	}
+	//imprime en hexadecimal el valor del BIGNUM
+	BN_print(out, b);
+	BN_free(b);
+	BIO_free(out);
+	printf("\n");
+	
+
+	/*p = factorizar(b);
 	printf("factores:\n");
 	/*
-	100160063
+	
 	10006200817
 	250035001189
 	250000009000000081
 	*/
-
+	/*
 	while(p->tope != NULL){
 		elemento e = Pop(p);
 		char  * factor = malloc(sizeof(char) * 20);
-		factor = BN_bn2dec(e->b);
+		factor = BN_bn2dec(e.b);
 		printf("%s\n", factor);
-		free(num);
-	}
+	}*/
 	return 0;
 }
