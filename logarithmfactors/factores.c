@@ -7,9 +7,13 @@
 pila * factorizar(BIGNUM * n){
 	pila * stack;
 	elemento e;
-
+	char numString1[2] = "1";
 	char numString[2] = "2";
 	char numString3[2] = "3";
+
+	BIGNUM * one = BN_new();
+	BN_dec2bn(one, numString1);
+
 	BIGNUM * two = BN_new();
 	BN_dec2bn(two, numString);
 
@@ -42,24 +46,25 @@ pila * factorizar(BIGNUM * n){
 	BN_dec2bn(i, numString3);
 	BN_mul(ii, i, i, BN_CTX_new());
 	while(BN_cmp(ii, n) <= 0){
-		ii <= n
-		while(){
-
+		
+		while(1){
+			//modulo, 
+			BN_nnmod(n, n, i, BN_CTX_new());
+			if(BN_is_zero(n)){
+				//BIGNUM * b = BN_new();
+				e->b = i;
+				Push(stack, e);
+				BN_div(n, NULL, n, i, BN_CTX_new());
+			}else{
+				break;
+			}
 		}
 		//i+=2
 		BN_add(i, i, two);
 	}
-	for(i = 3; i * i <= n; i +=2){
-		//n%i
-		while(fmod(n, i) == zero){//comprobamos que ese mismo numero no sea factor otra vez
-			e.n = i;
-			Push(stack, e);
-			n /= i;
-		}
-	}
 
-	if(n > 1){//si i*i ya paso a n, y n es mayor a 1 tenemos otro factor ahi primo
-		e.n = n;
+	if(BN_cmp(n, one)){
+		e->b = n;
 		Push(stack, e);
 	}
 	return stack;
