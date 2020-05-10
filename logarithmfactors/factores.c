@@ -5,30 +5,25 @@
 
 #include <openssl/bn.h>
 #include <openssl/bio.h>
-/*pila * factorizar(BIGNUM * n){
+pila * factorizar(BIGNUM * n){
 	pila * stack;
 	elemento e;
 	char numString1[2] = "1";
 	char numString[2] = "2";
 	char numString3[2] = "3";
 
-	BIGNUM * one = BN_new();
-	BN_dec2bn(one, numString1);
-
-	BIGNUM * two = BN_new();
-	BN_dec2bn(two, numString);
+	BIGNUM * one = str2bn(numString1);
+	BIGNUM * two = str2bn(numString2);
 
 	stack = malloc(sizeof(pila));
 	Initialize(stack);
-
 	//quitamos los posibles pares del for
 	//n%2
 	while(1){
-		//modulo, 
+		//modulo
 		BN_nnmod(n, n, two, BN_CTX_new());
 		if(BN_is_zero(n)){
-			BIGNUM * b = BN_new();
-			BN_dec2bn(b, numString);
+			BIGNUM * b = str2bn(numString);
 			e.b = b;
 			Push(stack, e);
 			BN_div(n, NULL, n, two, BN_CTX_new());
@@ -36,7 +31,7 @@
 			break;
 		}
 	}
-
+	/*
 	//Recorremos los impares de 3 a n siempre y cuando el cuadrado de i sea menor igual
 	//a n.
 	BIGNUM * i = BN_new();
@@ -67,8 +62,9 @@
 		e.b = n;
 		Push(stack, e);
 	}
+	*/
 	return stack;
-}*/
+}
 
 //gcc factores.c TADPilaDin.c  -lssl -lcrypto -o factores
 
@@ -109,7 +105,7 @@ int main(int argc, char const *argv[]){
 	printf("\n");
 	
 
-	/*p = factorizar(b);
+	p = factorizar(b);
 	printf("factores:\n");
 	/*
 	
@@ -117,12 +113,11 @@ int main(int argc, char const *argv[]){
 	250035001189
 	250000009000000081
 	*/
-	/*
+	
 	while(p->tope != NULL){
 		elemento e = Pop(p);
-		char  * factor = malloc(sizeof(char) * 20);
-		factor = BN_bn2dec(e.b);
-		printf("%s\n", factor);
-	}*/
+		printBN(e.b);
+		printf("\n");
+	}
 	return 0;
 }
