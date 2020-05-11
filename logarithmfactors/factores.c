@@ -9,21 +9,21 @@ pila * factorizar(BIGNUM * n){
 	pila * stack;
 	elemento e;
 	char numString1[2] = "1";
-	char numString[2] = "2";
+	char numString2[2] = "2";
 	char numString3[2] = "3";
 
 	BIGNUM * one = str2bn(numString1);
 	BIGNUM * two = str2bn(numString2);
-
+	BIGNUM * aux;
 	stack = malloc(sizeof(pila));
 	Initialize(stack);
 	//quitamos los posibles pares del for
 	//n%2
 	while(1){
 		//modulo
-		BN_nnmod(n, n, two, BN_CTX_new());
-		if(BN_is_zero(n)){
-			BIGNUM * b = str2bn(numString);
+		BN_nnmod(aux, n, two, BN_CTX_new());
+		if(BN_is_zero(aux)){
+			BIGNUM * b = str2bn(numString2);
 			e.b = b;
 			Push(stack, e);
 			BN_div(n, NULL, n, two, BN_CTX_new());
