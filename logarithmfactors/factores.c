@@ -14,7 +14,7 @@ BIGNUM * str2bn(char * s);
 
 int main(int argc, char const *argv[]){
 	pila * p;
-	char num [22] = "64";
+	char num [22] = "250000009000000081";
 	BIO *out;
 	out = BIO_new_fp(stdout, BIO_NOCLOSE);
 	BIGNUM * b = str2bn(num);
@@ -83,31 +83,33 @@ pila * factorizar(BIGNUM * n){
 	BIGNUM * ii = BN_new();
 	//inicializar valores
 	BN_mul(ii, i, i, BN_CTX_new());
-	
-	/*
+
 	while(BN_cmp(ii, n) <= 0){
-		
 		while(1){
 			//modulo, 
-			BN_nnmod(n, n, i, BN_CTX_new());
-			if(BN_is_zero(n)){
-				//BIGNUM * b = BN_new();
-				e.b = i;
+			BN_mod(aux, n, i, BN_CTX_new());
+			if(BN_is_zero(aux)){
+				BIGNUM * b = BN_new();
+				BN_copy(b, i);
+				e.b = b;
 				Push(stack, e);
 				BN_div(n, NULL, n, i, BN_CTX_new());
 			}else{
 				break;
 			}
 		}
+		
 		//i+=2
 		BN_add(i, i, two);
 	}
-
+	
 	if(BN_cmp(n, one)){
-		e.b = n;
+		BIGNUM * b = BN_new();
+		BN_copy(b, n);
+		e.b = b;
 		Push(stack, e);
 	}
-	*/
+	
 	return stack;
 }
 
