@@ -23,17 +23,16 @@ int main(int argc, char const *argv[]){
 
 	printBN(b);
 	printf("\n");
-	while(1){
-		BN_mod_exp();		
-	}
+
 	//imprime en hexadecimal el valor del BIGNUM
 	BN_print(out, b);
-	BN_free(b);
+	//BN_free(b);
 	BIO_free(out);
 	printf("\n");
 	
 
 	p = factorizar(b);
+	BN_free(b);
 	printf("factores:\n");
 	/*
 	
@@ -60,14 +59,14 @@ pila * factorizar(BIGNUM * n){
 
 	BIGNUM * one = str2bn(numString1);
 	BIGNUM * two = str2bn(numString2);
-	BIGNUM * aux;
+	BIGNUM * aux = BN_new();
 	stack = malloc(sizeof(pila));
 	Initialize(stack);
 	//quitamos los posibles pares del for
 	//n%2
 	while(1){
 		//modulo
-		BN_nnmod(aux, n, two, BN_CTX_new());
+		BN_mod(aux, n, two, BN_CTX_new());
 		if(BN_is_zero(aux)){
 			BIGNUM * b = str2bn(numString2);
 			e.b = b;
