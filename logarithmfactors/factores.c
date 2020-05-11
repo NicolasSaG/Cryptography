@@ -5,6 +5,52 @@
 
 #include <openssl/bn.h>
 #include <openssl/bio.h>
+
+//gcc factores.c TADPilaDin.c  -lssl -lcrypto -o factores
+
+pila * factorizar(BIGNUM * n);
+void printBN(BIGNUM * b);
+BIGNUM * str2bn(char * s);
+
+int main(int argc, char const *argv[]){
+	pila * p;
+	char num [22] = "64";
+	BIO *out;
+	out = BIO_new_fp(stdout, BIO_NOCLOSE);
+	BIGNUM * b = str2bn(num);
+	
+	//convertir bignum a cadena
+
+	printBN(b);
+	printf("\n");
+	while(1){
+		BN_mod_exp();		
+	}
+	//imprime en hexadecimal el valor del BIGNUM
+	BN_print(out, b);
+	BN_free(b);
+	BIO_free(out);
+	printf("\n");
+	
+
+	p = factorizar(b);
+	printf("factores:\n");
+	/*
+	
+	10006200817
+	250035001189
+	250000009000000081
+	*/
+	
+	while(p->tope != NULL){
+		elemento e = Pop(p);
+		printBN(e.b);
+		printf("\n");
+	}
+	return 0;
+}
+
+
 pila * factorizar(BIGNUM * n){
 	pila * stack;
 	elemento e;
@@ -66,8 +112,6 @@ pila * factorizar(BIGNUM * n){
 	return stack;
 }
 
-//gcc factores.c TADPilaDin.c  -lssl -lcrypto -o factores
-
 
 //imprimir en decimal un bignum
 void printBN(BIGNUM * b){
@@ -81,43 +125,4 @@ BIGNUM * str2bn(char * s){
 	b = BN_new();
 	BN_dec2bn(&b, s);
 	return b;
-}
-
-
-int main(int argc, char const *argv[]){
-	pila * p;
-	char num [22] = "100160063";
-	BIO *out;
-	out = BIO_new_fp(stdout, BIO_NOCLOSE);
-	BIGNUM * b = str2bn(num);
-	
-	//convertir bignum a cadena
-
-	printBN(b);
-	printf("\n");
-	while(1){
-		BN_mod_exp();		
-	}
-	//imprime en hexadecimal el valor del BIGNUM
-	BN_print(out, b);
-	BN_free(b);
-	BIO_free(out);
-	printf("\n");
-	
-
-	p = factorizar(b);
-	printf("factores:\n");
-	/*
-	
-	10006200817
-	250035001189
-	250000009000000081
-	*/
-	
-	while(p->tope != NULL){
-		elemento e = Pop(p);
-		printBN(e.b);
-		printf("\n");
-	}
-	return 0;
 }
