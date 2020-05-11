@@ -76,15 +76,15 @@ pila * factorizar(BIGNUM * n){
 			break;
 		}
 	}
-	/*
+	
 	//Recorremos los impares de 3 a n siempre y cuando el cuadrado de i sea menor igual
 	//a n.
-	BIGNUM * i = BN_new();
+	BIGNUM * i = str2bn(numString3);
 	BIGNUM * ii = BN_new();
-	
 	//inicializar valores
-	BN_dec2bn(i, numString3);
 	BN_mul(ii, i, i, BN_CTX_new());
+	
+	/*
 	while(BN_cmp(ii, n) <= 0){
 		
 		while(1){
