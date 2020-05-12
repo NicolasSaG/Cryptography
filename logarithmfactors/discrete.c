@@ -7,7 +7,6 @@
 BIGNUM * discreteLogarithm(BIGNUM * a, BIGNUM * m, BIGNUM * res);
 void printBN(BIGNUM * b);
 BIGNUM * str2bn(char * s);
-BIGNUM * aproxSquareRoot(BIGNUM * b);
 
 //gcc discrete.c -lssl -lcrypto -o discrete
 
@@ -37,9 +36,10 @@ BIGNUM * discreteLogarithm(BIGNUM * a, BIGNUM * m, BIGNUM * res){
 
     BIGNUM * potencia = BN_new();
     BIGNUM * iBN = BN_new(), * jBN = BN_new();
-    BIGNUM * n = aproxSquareRoot(m);
-    //BN_sqr(n, m, contexto);
-    printf("sqrt(m) = ");
+    BIGNUM * n = BN_new();
+    char * cadAuxN = BN_bn2dec(m);
+    BN_lshift(n, m, strlen(cadAuxN)/2);
+
     printBN(n);
     BN_add(n, n, one);
     
@@ -102,13 +102,4 @@ BIGNUM * str2bn(char * s){
     b = BN_new();
     BN_dec2bn(&b, s);
     return b;
-}
-
-
-BIGNUM * aproxSquareRoot(BIGNUM * b){
-    char * aux;
-    BIGNUM * res = BN_new();
-    aux = BN_bn2dec(b);
-    printf("size of number = %ld\n", strlen(aux));
-    return res;
 }
