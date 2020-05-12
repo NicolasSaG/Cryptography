@@ -14,7 +14,7 @@ BIGNUM * str2bn(char * s);
 
 int main(int argc, char const *argv[]){
 	pila * p;
-	char num [22] = "250000009000000081";
+	char num [22] = "100160063";
 	BIO *out;
 	out = BIO_new_fp(stdout, BIO_NOCLOSE);
 	BIGNUM * b = str2bn(num);
