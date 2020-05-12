@@ -8,15 +8,17 @@ void printBN(BIGNUM * b);
 BIGNUM * str2bn(char * s);
 
 int main(int argc, char const *argv[]){
-    long i;
-    long a, m, res;
-    a = 3;
-    m = 500000009;
-    res = 406870124;
+    char * aString = "11";
+    char * mString = "1009";
+    char * resString = "400";
+    
+    BIGNUM * a = str2bn(aString);
+    BIGNUM * m = str2bn(mString);
+    BIGNUM * res = str2bn(resString);
+    BIGNUM * i = BN_new();
     
     i = discreteLogarithm(a, m, res);
 
-    printf("%ld^xmod%ld = %ld; x =%ld\n", a, m, res, i);
     return 0;
 }
 
@@ -43,6 +45,10 @@ BIGNUM * discreteLogarithm(BIGNUM * a, BIGNUM * m, BIGNUM * res){
         BN_mod_exp(arr[i], a, aux, m, contexto);
     }       
 
+    for(j = 0; j < i; j++){
+        printBN(arr[i]);
+        printf("\n");
+    }
     // for(i = n; i >= 1 ; i--){
     //     arr[i-1] = powmod (a, i * n, m);
     // }
