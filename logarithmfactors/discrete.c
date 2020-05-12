@@ -1,11 +1,15 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <math.h>
+#include <string.h>
 #include <openssl/bn.h>
 
 BIGNUM * discreteLogarithm(BIGNUM * a, BIGNUM * m, BIGNUM * res);
 void printBN(BIGNUM * b);
 BIGNUM * str2bn(char * s);
+BIGNUM * aproxSquareRoot(BIGNUM * b);
+
+//gcc discrete.c -lssl -lcrypto -o discrete
 
 int main(int argc, char const *argv[]){
     char * aString = "11";
@@ -17,14 +21,16 @@ int main(int argc, char const *argv[]){
     BIGNUM * res = str2bn(resString);
     BIGNUM * i = BN_new();
     
+    printBN(m);
+    printf("==========\n");
     i = discreteLogarithm(a, m, res);
 
     return 0;
 }
 
 BIGNUM * discreteLogarithm(BIGNUM * a, BIGNUM * m, BIGNUM * res){
-    char * zeroString [2] = "0";
-    char * oneString [2] = "1";
+    char * zeroString = "0";
+    char * oneString = "1";
     BIGNUM * zero = str2bn(zeroString);
     BIGNUM * one = str2bn(oneString);
     BN_CTX * contexto = BN_CTX_new();
@@ -32,19 +38,30 @@ BIGNUM * discreteLogarithm(BIGNUM * a, BIGNUM * m, BIGNUM * res){
     BIGNUM * potencia = BN_new();
     BIGNUM * iBN = BN_new(), * jBN = BN_new();
     BIGNUM * n = BN_new();
-    BN_mod_sqr(n, m, contexto);
+    BN_sqr(n, m, contexto);
+    printf("sqrt(m) = ");
+    printBN(n);
     BN_add(n, n, one);
-
-    BIGNUM * arr [];
+    
+    printf("\n");
+    char * auxValue = BN_bn2dec(n);
+    char * auxFin;
+    BIGNUM * arr [strtol(auxValue, &auxFin, 10)];
     long i, j;
+
     for(iBN = BN_copy(iBN, zero), i = 0; BN_cmp(iBN, n) == -1;  BN_add(iBN, iBN, one), i++){
+        printf("iBN: ");
+        printBN(iBN);
+        printf(" , n = ");
+        printBN(n);
+        break;
         BIGNUM * aux = BN_new();
         BN_mul(aux, iBN, n, contexto);
 
         arr[i] = BN_new();
         BN_mod_exp(arr[i], a, aux, m, contexto);
     }       
-
+    return zero;
     for(j = 0; j < i; j++){
         printBN(arr[i]);
         printf("\n");
