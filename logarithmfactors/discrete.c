@@ -37,8 +37,8 @@ BIGNUM * discreteLogarithm(BIGNUM * a, BIGNUM * m, BIGNUM * res){
 
     BIGNUM * potencia = BN_new();
     BIGNUM * iBN = BN_new(), * jBN = BN_new();
-    BIGNUM * n = BN_new();
-    BN_sqr(n, m, contexto);
+    BIGNUM * n = aproxSquareRoot(m);
+    //BN_sqr(n, m, contexto);
     printf("sqrt(m) = ");
     printBN(n);
     BN_add(n, n, one);
@@ -104,3 +104,11 @@ BIGNUM * str2bn(char * s){
     return b;
 }
 
+
+BIGNUM * aproxSquareRoot(BIGNUM * b){
+    char * aux;
+    BIGNUM * res = BN_new();
+    aux = BN_bn2dec(b);
+    printf("size of number = %d\n", strlen(aux));
+    return res;
+}
