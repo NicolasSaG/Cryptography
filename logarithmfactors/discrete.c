@@ -12,7 +12,7 @@ BIGNUM * str2bn(char * s);
 
 int main(int argc, char const *argv[]){
     char * aString = "11";
-    char * mString = "1009";
+    char * mString = "1000000000";
     char * resString = "400";
     
     BIGNUM * a = str2bn(aString);
@@ -20,7 +20,6 @@ int main(int argc, char const *argv[]){
     BIGNUM * res = str2bn(resString);
     BIGNUM * i = BN_new();
     
-    printBN(m);
     printf("==========\n");
     i = discreteLogarithm(a, m, res);
 
@@ -38,11 +37,8 @@ BIGNUM * discreteLogarithm(BIGNUM * a, BIGNUM * m, BIGNUM * res){
     BIGNUM * iBN = BN_new(), * jBN = BN_new();
     BIGNUM * n = BN_new();
     char * cadAuxN = BN_bn2dec(m);
-    BN_lshift(n, m, strlen(cadAuxN)/2);
-
+    BN_rshift(n, m, (3 * strlen(cadAuxN))/4);
     printBN(n);
-    BN_add(n, n, one);
-    
     printf("\n");
     char * auxValue = BN_bn2dec(n);
     char * auxFin;
@@ -50,25 +46,12 @@ BIGNUM * discreteLogarithm(BIGNUM * a, BIGNUM * m, BIGNUM * res){
     long i, j;
 
     for(iBN = BN_copy(iBN, zero), i = 0; BN_cmp(iBN, n) == -1;  BN_add(iBN, iBN, one), i++){
-        printf("iBN: ");
-        printBN(iBN);
-        printf(" , n = ");
-        printBN(n);
-        break;
         BIGNUM * aux = BN_new();
         BN_mul(aux, iBN, n, contexto);
 
         arr[i] = BN_new();
         BN_mod_exp(arr[i], a, aux, m, contexto);
     }       
-    return zero;
-    for(j = 0; j < i; j++){
-        printBN(arr[i]);
-        printf("\n");
-    }
-    // for(i = n; i >= 1 ; i--){
-    //     arr[i-1] = powmod (a, i * n, m);
-    // }
 
     // for (j = 0; j < n; j++) { 
     //     // Calculate (a ^ j) * b and check 
