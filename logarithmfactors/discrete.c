@@ -109,6 +109,6 @@ BIGNUM * aproxSquareRoot(BIGNUM * b){
     char * aux;
     BIGNUM * res = BN_new();
     aux = BN_bn2dec(b);
-    printf("size of number = %d\n", strlen(aux));
+    printf("size of number = %ld\n", strlen(aux));
     return res;
 }
