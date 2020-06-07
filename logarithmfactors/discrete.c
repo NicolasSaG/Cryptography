@@ -35,11 +35,8 @@ BIGNUM * discreteLogarithm(BIGNUM * a, BIGNUM * m, BIGNUM * res){
 
     BIGNUM * potencia = BN_new();
     BIGNUM * iBN = BN_new(), * jBN = BN_new();
-    BIGNUM * n = BN_new();
-    char * cadAuxN = BN_bn2dec(m);
-    BN_rshift(n, m, (3 * strlen(cadAuxN))/4);
-    printBN(n);
-    printf("\n");
+    BIGNUM * n = BN_new(); //calcular raiz de m
+
     char * auxValue = BN_bn2dec(n);
     char * auxFin;
     BIGNUM * arr [strtol(auxValue, &auxFin, 10)];
