@@ -1,55 +1,62 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 #include <openssl/sha.h>
+#include <openssl/evp.h>
 
 static const int K_READ_BUF_SIZE = { 1024 * 16 };
 
 //gcc sha256.c -lssl -lcrypto -o sha256
-unsigned char * calculateSHA1(char * filename);
+
+//execute ./sha256 file.txt
+unsigned char * secureSHA256(char * filename);
 
 int main(int argc, char *argv[]){
-    unsigned char * shaDigest = calculateSHA256(argv[1]); 
-
-    char *sha256hash = (char *)malloc(sizeof(char) * 65);
-    sha256hash[65] = '\0';
+    unsigned char * shaDigest = secureSHA256(argv[1]); 
     int i;
-    for (i = 0; i < SHA256_DIGEST_LENGTH; i++){
-        sprintf(&sha256hash[i*2], "%02x", shaDigest[i]);
-    }
-    printf("SHA256 hash: %s\n", sha256hash);
+    printf("Digest is: ");
+    for (i = 0; i < 32; i++)
+        printf("%02x", shaDigest[i]);
+    printf("\n");
     
     return 0;
 }
-    //sha1 40 char 459567d3bde4418b7fe302ff9809c4b0befaf7dd
-    //sha256 64 char 0b894166d3336435c800bea36ff21b29eaa801a52f584c006c49289a0dcf6e2f
 
-unsigned char * calculateSHA256(char * filename){
+unsigned char * secureSHA256(char * filename){
     if (!filename) {
         return NULL;
     }
-
     FILE *fp = fopen(filename, "rb");
     if (fp == NULL) {
         return NULL;
     }
+    EVP_MD_CTX * mdctx;
+    const EVP_MD * md;
+    unsigned int md_len;
+    unsigned char * sha256_digest = malloc(sizeof(unsigned char) * EVP_MAX_MD_SIZE);
+    unsigned char buf[1024*4];
 
-    unsigned char * sha256_digest = malloc(sizeof(char) * SHA256_DIGEST_LENGTH);
-    SHA256_CTX context;
-
-    if(!SHA256_Init(&context))
-        return NULL;
-
-    unsigned char buf[K_READ_BUF_SIZE];
+    //tipo de hash
+    md = EVP_sha256();
+    if (md == NULL) {
+        printf("secureHash256(): Unknown message digest\n");
+        exit(1);
+    }
+    //inicializar contexto
+    mdctx = EVP_MD_CTX_new();
+    EVP_DigestInit_ex(mdctx, md, NULL);
     while (!feof(fp)){
         size_t total_read = fread(buf, 1, sizeof(buf), fp);
-        if(!SHA256_Update(&context, buf, total_read)){
+        if(!EVP_DigestUpdate(mdctx, buf, strlen(buf))){
             return NULL;
         }
-    }
+    }   
     fclose(fp);
 
-    if(!SHA256_Final(sha256_digest, &context))
+    if(!EVP_DigestFinal_ex(mdctx, sha256_digest, &md_len))
         return NULL;
+    
+    EVP_MD_CTX_free(mdctx);
 
     return sha256_digest;
 }
