@@ -60,3 +60,4 @@ unsigned char * secureSHA256(char * filename){
 
     return sha256_digest;
 }
+
