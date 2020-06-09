@@ -1,0 +1,10 @@
+funcion de cifrado de llave publica
+
+la llave publica es la llave del usuario
+se cifra el resultado del Hash(Archivo texto plano)
+
+Assuming the individual’s private key has not been compromised, encrypting data and messages offers the following security benefits.
+
+Confidentiality - because the content is encrypted with an individual’s public key, it can only be decrypted with the individual’s private key, ensuring only the intended recipient can decrypt and view the contents/li>
+
+Integrity - part of the decryption process involves verifying that the contents of the original encrypted message and the new decrypted match, so even the slightest change to the original content would cause the decryption process to fail
