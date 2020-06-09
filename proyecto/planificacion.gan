@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="UTF-8"?><project name="Deduplication" company="" webLink="http://" view-date="2020-05-31" view-index="0" gantt-divider-location="300" resource-divider-location="300" version="2.8.11" locale="es_MX">
+    <description><![CDATA[Proyecto de deduplicación en la nube]]></description>
+    <view zooming-state="default:1" id="gantt-chart">
+        <field id="tpd3" name="Nombre" width="167" order="0"/>
+        <field id="tpd4" name="Fecha de inicio" width="65" order="1"/>
+        <field id="tpd5" name="Fecha de fin" width="64" order="2"/>
+    </view>
+    <view id="resource-table">
+        <field id="0" name="Nombre" width="210" order="0"/>
+        <field id="1" name="Función" width="86" order="1"/>
+    </view>
+    <!-- -->
+    <calendars>
+        <day-types>
+            <day-type id="0"/>
+            <day-type id="1"/>
+            <default-week id="1" name="default" sun="0" mon="0" tue="0" wed="0" thu="0" fri="0" sat="0"/>
+            <only-show-weekends value="false"/>
+            <overriden-day-types/>
+            <days/>
+        </day-types>
+    </calendars>
+    <tasks empty-milestones="true">
+        <taskproperties>
+            <taskproperty id="tpd0" name="type" type="default" valuetype="icon"/>
+            <taskproperty id="tpd1" name="priority" type="default" valuetype="icon"/>
+            <taskproperty id="tpd2" name="info" type="default" valuetype="icon"/>
+            <taskproperty id="tpd3" name="name" type="default" valuetype="text"/>
+            <taskproperty id="tpd4" name="begindate" type="default" valuetype="date"/>
+            <taskproperty id="tpd5" name="enddate" type="default" valuetype="date"/>
+            <taskproperty id="tpd6" name="duration" type="default" valuetype="int"/>
+            <taskproperty id="tpd7" name="completion" type="default" valuetype="int"/>
+            <taskproperty id="tpd8" name="coordinator" type="default" valuetype="text"/>
+            <taskproperty id="tpd9" name="predecessorsr" type="default" valuetype="text"/>
+        </taskproperties>
+        <task id="0" name="Codificación" meeting="false" start="2020-06-04" duration="16" complete="0" expand="true">
+            <task id="20" name="Primitivas criptográficas" meeting="false" start="2020-06-04" duration="7" complete="0" expand="true">
+                <depend id="2" type="2" difference="0" hardness="Strong"/>
+                <task id="21" name="Cifrado simétrico" meeting="false" start="2020-06-04" duration="3" complete="0" expand="true">
+                    <task id="22" name="KeyGen_se" color="#8cb6ce" meeting="false" start="2020-06-04" duration="1" complete="0" thirdDate="2020-06-01" thirdDate-constraint="0" expand="true">
+                        <depend id="23" type="2" difference="0" hardness="Strong"/>
+                    </task>
+                    <task id="23" name="Encrypt_se" meeting="false" start="2020-06-05" duration="1" complete="0" expand="true">
+                        <depend id="24" type="2" difference="0" hardness="Strong"/>
+                    </task>
+                    <task id="24" name="Decrypt_se" meeting="false" start="2020-06-06" duration="1" complete="0" expand="true"/>
+                </task>
+                <task id="26" name="Cifrado convergente" meeting="false" start="2020-06-04" duration="7" complete="0" expand="true">
+                    <task id="27" name="KeyGen_ce" color="#8cb6ce" meeting="false" start="2020-06-04" duration="1" complete="0" thirdDate="2020-06-01" thirdDate-constraint="0" expand="true"/>
+                    <task id="28" name="Encrypt_ce" color="#8cb6ce" meeting="false" start="2020-06-08" duration="2" complete="0" thirdDate="2020-06-01" thirdDate-constraint="0" expand="true"/>
+                    <task id="29" name="Decrypt_ce" color="#8cb6ce" meeting="false" start="2020-06-09" duration="1" complete="0" thirdDate="2020-06-01" thirdDate-constraint="0" expand="true"/>
+                    <task id="30" name="TagGen_ce" color="#8cb6ce" meeting="false" start="2020-06-10" duration="1" complete="0" thirdDate="2020-06-01" thirdDate-constraint="0" expand="true"/>
+                </task>
+                <task id="31" name="Secreto compartido" meeting="false" start="2020-06-10" duration="1" complete="0" expand="true">
+                    <task id="32" name="KeyExchange" color="#8cb6ce" meeting="false" start="2020-06-10" duration="1" complete="0" thirdDate="2020-06-01" thirdDate-constraint="0" expand="true"/>
+                </task>
+            </task>
+            <task id="2" name="Módulo de archivos" color="#000000" meeting="false" start="2020-06-11" duration="9" complete="0" thirdDate="2020-06-01" thirdDate-constraint="0" expand="true">
+                <task id="3" name="Subir archivo" color="#8cb6ce" meeting="false" start="2020-06-11" duration="1" complete="0" thirdDate="2020-06-11" thirdDate-constraint="0" expand="true">
+                    <depend id="16" type="2" difference="0" hardness="Strong"/>
+                </task>
+                <task id="15" name="Ver archivos" color="#8cb6ce" meeting="false" start="2020-06-11" duration="1" complete="0" thirdDate="2020-06-11" thirdDate-constraint="0" expand="true">
+                    <depend id="18" type="2" difference="0" hardness="Strong"/>
+                </task>
+                <task id="14" name="Borrar archivo" color="#8cb6ce" meeting="false" start="2020-06-14" duration="2" complete="0" thirdDate="2020-06-11" thirdDate-constraint="0" expand="true">
+                    <depend id="17" type="2" difference="0" hardness="Strong"/>
+                </task>
+                <task id="19" name="Descargar archivo" color="#8cb6ce" meeting="false" start="2020-06-17" duration="3" complete="0" thirdDate="2020-06-11" thirdDate-constraint="0" expand="true">
+                    <depend id="43" type="2" difference="0" hardness="Strong"/>
+                </task>
+            </task>
+        </task>
+        <task id="8" name="Pruebas" color="#000000" meeting="false" start="2020-06-04" duration="20" complete="0" thirdDate="2020-06-13" thirdDate-constraint="0" expand="true">
+            <task id="9" name="Pruebas unitarias" meeting="false" start="2020-06-04" duration="17" complete="0" expand="true">
+                <depend id="10" type="2" difference="0" hardness="Strong"/>
+                <task id="44" name="P_cifrado simétrico" color="#8cb6ce" meeting="false" start="2020-06-04" duration="3" complete="0" thirdDate="2020-06-01" thirdDate-constraint="0" expand="true"/>
+                <task id="46" name="P_cifrado convergente" color="#8cb6ce" meeting="false" start="2020-06-04" duration="6" complete="0" thirdDate="2020-06-01" thirdDate-constraint="0" expand="true"/>
+                <task id="47" name="P_secreto compartido" color="#8cb6ce" meeting="false" start="2020-06-10" duration="1" complete="0" thirdDate="2020-06-01" thirdDate-constraint="0" expand="true"/>
+                <task id="16" name="P_subida de archivos" meeting="false" start="2020-06-12" duration="1" complete="0" expand="true"/>
+                <task id="18" name="P_ver archivos" meeting="false" start="2020-06-12" duration="1" complete="0" expand="true"/>
+                <task id="17" name="P_borrar archivo" meeting="false" start="2020-06-16" duration="1" complete="0" expand="true"/>
+                <task id="43" name="P_descargar archivos" meeting="false" start="2020-06-20" duration="1" complete="0" expand="true"/>
+            </task>
+            <task id="10" name="Pruebas de integración" meeting="false" start="2020-06-21" duration="3" complete="0" expand="true">
+                <task id="52" name="PI_Cliente servidor" color="#8cb6ce" meeting="false" start="2020-06-21" duration="3" complete="0" thirdDate="2020-06-21" thirdDate-constraint="0" expand="true"/>
+            </task>
+        </task>
+    </tasks>
+    <resources>
+        <resource id="0" name="Francisco Nicolas Sánchez García" function="SoftwareDevelopment:2" contacts="" phone=""/>
+        <resource id="1" name="Luis Ibarra" function="SoftwareDevelopment:2" contacts="" phone=""/>
+    </resources>
+    <allocations/>
+    <vacations/>
+    <previous/>
+    <roles roleset-name="Default"/>
+    <roles roleset-name="SoftwareDevelopment"/>
+</project>
