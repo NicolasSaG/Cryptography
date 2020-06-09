@@ -26,7 +26,7 @@ unsigned char * secureSHA256(char * filename){
     //tipo de hash
     md = EVP_sha256();
     if (md == NULL) {
-        printf("secureHash256(): Unknown message digest\n");
+        printf("secureHash256(): error message digest\n");
         exit(1);
     }
     //inicializar contexto
